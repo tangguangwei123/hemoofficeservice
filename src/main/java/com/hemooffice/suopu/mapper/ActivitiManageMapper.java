@@ -12,3 +12,6 @@ public interface ActivitiManageMapper {
      */
     void addActivitiCategory(Map<String,Object> map) throws Exception;
 }
+
+
+
