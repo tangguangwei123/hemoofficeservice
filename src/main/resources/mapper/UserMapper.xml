@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemooffice.suopu.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.User" >
+    <id column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="CHAR" />
+    <result column="USER_ACCOUNT" property="userAccount" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="TELL" property="tell" jdbcType="VARCHAR" />
+    <result column="HIDDEN_TELL" property="hiddenTell" jdbcType="INTEGER" />
+    <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hemooffice.suopu.dto.User" >
+    insert into oa_user (USER_ID, USER_NAME, SEX, 
+      USER_ACCOUNT, PASSWORD, EMAIL, 
+      MOBILE, TELL, HIDDEN_TELL, 
+      ORDER_NUM, ORG_ID, STATUS, 
+      CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
+      )
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
+      #{userAccount,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{tell,jdbcType=VARCHAR}, #{hiddenTell,jdbcType=INTEGER}, 
+      #{orderNum,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.User" >
+    update oa_user
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=CHAR},
+      USER_ACCOUNT = #{userAccount,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      TELL = #{tell,jdbcType=VARCHAR},
+      HIDDEN_TELL = #{hiddenTell,jdbcType=INTEGER},
+      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      ORG_ID = #{orgId,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=CHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select USER_ID, USER_NAME, SEX, USER_ACCOUNT, PASSWORD, EMAIL, MOBILE, TELL, HIDDEN_TELL, 
+    ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
+    from oa_user
+    where USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select USER_ID, USER_NAME, SEX, USER_ACCOUNT, PASSWORD, EMAIL, MOBILE, TELL, HIDDEN_TELL, 
+    ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
+    from oa_user
+  </select>
+</mapper>

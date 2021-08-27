@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemooffice.suopu.mapper.UserLogMapper" >
+  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.UserLog" >
+    <id column="LOG_ID" property="logId" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="INTEGER" />
+    <result column="EMP_NAME" property="empName" jdbcType="VARCHAR" />
+    <result column="METHOD" property="method" jdbcType="VARCHAR" />
+    <result column="OPERA_DESC" property="operaDesc" jdbcType="VARCHAR" />
+    <result column="IPADDR" property="ipaddr" jdbcType="VARCHAR" />
+    <result column="OPERA_STATE" property="operaState" jdbcType="INTEGER" />
+    <result column="OPERA_TIME" property="operaTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_user_log
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hemooffice.suopu.dto.UserLog" >
+    insert into oa_user_log (LOG_ID, USER_ID, EMP_NAME, 
+      METHOD, OPERA_DESC, IPADDR, 
+      OPERA_STATE, OPERA_TIME)
+    values (#{logId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{empName,jdbcType=VARCHAR}, 
+      #{method,jdbcType=VARCHAR}, #{operaDesc,jdbcType=VARCHAR}, #{ipaddr,jdbcType=VARCHAR}, 
+      #{operaState,jdbcType=INTEGER}, #{operaTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.UserLog" >
+    update oa_user_log
+    set USER_ID = #{userId,jdbcType=INTEGER},
+      EMP_NAME = #{empName,jdbcType=VARCHAR},
+      METHOD = #{method,jdbcType=VARCHAR},
+      OPERA_DESC = #{operaDesc,jdbcType=VARCHAR},
+      IPADDR = #{ipaddr,jdbcType=VARCHAR},
+      OPERA_STATE = #{operaState,jdbcType=INTEGER},
+      OPERA_TIME = #{operaTime,jdbcType=TIMESTAMP}
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select LOG_ID, USER_ID, EMP_NAME, METHOD, OPERA_DESC, IPADDR, OPERA_STATE, OPERA_TIME
+    from oa_user_log
+    where LOG_ID = #{logId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select LOG_ID, USER_ID, EMP_NAME, METHOD, OPERA_DESC, IPADDR, OPERA_STATE, OPERA_TIME
+    from oa_user_log
+  </select>
+</mapper>

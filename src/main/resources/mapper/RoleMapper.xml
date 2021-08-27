@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemooffice.suopu.mapper.RoleMapper" >
+  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.Role" >
+    <id column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="ROLE_IDENTIFI" property="roleIdentifi" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insert" parameterType="com.hemooffice.suopu.dto.Role" >
+    insert into oa_role (ROLE_ID, ROLE_NAME, ORG_ID, 
+      ROLE_IDENTIFI, CREATE_TIME, MODIFY_TIME
+      )
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{orgId,jdbcType=INTEGER}, 
+      #{roleIdentifi,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.Role" >
+    update oa_role
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=INTEGER},
+      ROLE_IDENTIFI = #{roleIdentifi,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP}
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ROLE_ID, ROLE_NAME, ORG_ID, ROLE_IDENTIFI, CREATE_TIME, MODIFY_TIME
+    from oa_role
+    where ROLE_ID = #{roleId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ROLE_ID, ROLE_NAME, ORG_ID, ROLE_IDENTIFI, CREATE_TIME, MODIFY_TIME
+    from oa_role
+  </select>
+</mapper>
