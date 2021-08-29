@@ -1,6 +1,6 @@
 package com.hemooffice.suopu.shiro.config;
 
-import com.bldreim.shiro.realm.UserRealm;
+import com.hemooffice.suopu.shiro.realm.UserRealm;
 import com.hemooffice.suopu.constant.GlobalParam;
 import com.hemooffice.suopu.shiro.cache.RedisCacheManager;
 import org.apache.shiro.SecurityUtils;
@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,7 +34,7 @@ import java.util.Map;
 public class ShiroConfig {
 
     private static final String JWT_FILTER_NAME = "jwt";
-    @Autowired
+    @Resource
     private RedisTemplate<String,Object> redisTemplate;
 
     /**
@@ -149,14 +150,8 @@ public class ShiroConfig {
         filterChainDefinitionManager.put("/api/401/**", "anon");
         //filterChainDefinitionManager.put("/api/**", "anon");
         filterChainDefinitionManager.put("/api/publickeystr", "anon");
-        filterChainDefinitionManager.put("/api/test/**", "anon");
-        filterChainDefinitionManager.put("/api/certtypelist/**", "anon");
-        filterChainDefinitionManager.put("/api/relation/**", "anon");
-        filterChainDefinitionManager.put("/api/uploadserver/**", "anon");
+        //filterChainDefinitionManager.put("/api/generateRsa", "anon");
         filterChainDefinitionManager.put("/druid/**", "anon");
-        filterChainDefinitionManager.put("/api/captcha", "anon");
-        filterChainDefinitionManager.put("/api/user/changepassword", "anon");
-        filterChainDefinitionManager.put("/api/download", "anon");
         //filterChainDefinitionManager.put("/user/**", "authc");
         filterChainDefinitionManager.put("/**", JWT_FILTER_NAME);
 

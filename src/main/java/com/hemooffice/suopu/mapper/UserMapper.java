@@ -30,4 +30,11 @@ public interface UserMapper {
      * @return
      */
     int updateByPrimaryKey(User record);
+
+    /**
+     * 根据账户名查询用户
+     * @param userAccount
+     * @return
+     */
+    User findUserByUserAccount(String userAccount);
 }

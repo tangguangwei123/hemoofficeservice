@@ -84,20 +84,10 @@ public class Msg {
     /**
      * 发送带有数据执行成功消息
      */
-    public static Msg success(int status,String message,Object data){
+    public static Msg success(Object data){
         Msg msg = new Msg();
-        msg.setStatus(status);
-        msg.setMessage(message);
-        msg.setData(data);
-        return msg;
-    }
-    /**
-     * 发送带有数据消息
-     */
-    public static Msg res(int status,String message,Object data){
-        Msg msg = new Msg();
-        msg.setStatus(status);
-        msg.setMessage(message);
+        msg.setStatus(200);
+        msg.setMessage("ok");
         msg.setData(data);
         return msg;
     }

@@ -19,6 +19,6 @@ public class ActivitiManageController {
     @PostMapping("/add-category")
     public Msg addActCategory(@Validated @RequestBody OaActCategory oaActCategory){
 
-        return Msg.success(200,"ok", null);
+        return Msg.success(null);
     }
 }

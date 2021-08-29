@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemooffice.suopu.mapper.OrganizationMapper" >
+  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.Organization" >
+    <id column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from oa_organization
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hemooffice.suopu.dto.Organization" >
+    insert into oa_organization (ORG_ID, PARENT_ID, ORG_NAME, 
+      ORDER_NUM, CREATE_TIME)
+    values (#{orgId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.Organization" >
+    update oa_organization
+    set PARENT_ID = #{parentId,jdbcType=INTEGER},
+      ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select ORG_ID, PARENT_ID, ORG_NAME, ORDER_NUM, CREATE_TIME
+    from oa_organization
+    where ORG_ID = #{orgId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ORG_ID, PARENT_ID, ORG_NAME, ORDER_NUM, CREATE_TIME
+    from oa_organization
+  </select>
+</mapper>

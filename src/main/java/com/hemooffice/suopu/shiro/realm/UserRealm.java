@@ -1,10 +1,14 @@
 package com.hemooffice.suopu.shiro.realm;
 
+import com.hemooffice.suopu.constant.GlobalParam;
+import com.hemooffice.suopu.dto.Organization;
+import com.hemooffice.suopu.dto.Permission;
 import com.hemooffice.suopu.dto.Role;
 import com.hemooffice.suopu.dto.User;
 import com.hemooffice.suopu.service.UserService;
 import com.hemooffice.suopu.service.RoleService;
 import com.hemooffice.suopu.shiro.JWTUtils;
+import com.hemooffice.suopu.shiro.config.StatelessAuthenticationToken;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -16,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import com.hemooffice.suopu.service.ResourceService;
+import com.hemooffice.suopu.service.PermissionService;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,10 +37,13 @@ public class UserRealm extends AuthorizingRealm {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private RoleService roleService;
+
     @Autowired
-    private ResourceService resourceService;
+    private PermissionService permissionService;
+
     @Resource(name = "redisTemplate")
     private RedisTemplate<String,Object> redisTemplate;
     /**
@@ -60,7 +67,7 @@ public class UserRealm extends AuthorizingRealm {
 
         User user = null;
         try {
-            user = userService.findUserByUsername(userName.toUpperCase());
+            user = userService.findUserByUserAccount(userName.toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("执行Shiro权限认证:"+e.toString());
@@ -77,13 +84,13 @@ public class UserRealm extends AuthorizingRealm {
             //赋予角色
             List<Role> roles = roleService.findRoleListByUserId(user.getUserId());
             for (Role role : roles) {
-                info.addRole(role.getRoleDesc());
+                info.addRole(role.getRoleIdentifi());
                 //赋予资源
                 List<Permission> permissions = permissionService.findPermissionListByRoleId(role.getRoleId());
                 if(null != permissions && permissions.size() > 0){
                    for (Permission permission : permissions) {
-                       info.addStringPermission(permission.getFunctionDesc());
-                       logger.info(permission.getFunctionCaption());
+                       info.addStringPermission(permission.getPermission());
+                       logger.info(permission.getName());
                    }
                }
             }
@@ -103,23 +110,23 @@ public class UserRealm extends AuthorizingRealm {
         logger.info("##################执行Shiro登陆认证##################");
         String token = (String) authenticationToken.getCredentials();
         //从token中获取用户名
-        String username = JWTUtils.getUsername(token);
+        String userAccount = JWTUtils.getUsername(token);
         //获取数据库中存取的用户，密码是加密后的
         User user = null;
         try {
-            user = userMapper.findUserByUsername(username.toUpperCase());
+            user = userService.findUserByUserAccount(userAccount.toUpperCase());
         } catch (Exception e) {
             e.printStackTrace();
             throw new UnknownAccountException("用户身份认证异常！");
         }
         if (user != null) {
-            if(user.getActive() == 0){
+            if(user.getStatus() == 0){
                 logger.error("执行Shiro登陆认证:账户"+user.getUserName()+"已停用");
                 throw new AuthorizationException("账户已停用！");
             }
 
             // 密码验证
-            if (!JWTUtils.verify(token, username, user.getUserPass())) {
+            if (!JWTUtils.verify(token, userAccount, user.getPassword())) {
                 throw new IncorrectCredentialsException("token验证异常:无效token");
             }
             //重新设置redes中信息过期时间

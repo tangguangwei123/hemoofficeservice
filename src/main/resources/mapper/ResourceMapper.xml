@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.hemooffice.suopu.mapper.ResourceMapper" >
-  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.Resource" >
+<mapper namespace="com.hemooffice.suopu.mapper.PermissionMapper" >
+  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.Permission" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="acitve" property="acitve" jdbcType="INTEGER" />
   </resultMap>
-  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.Resource" >
+  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.Permission" >
     update oa_resource
     set parent_id = #{parentId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},

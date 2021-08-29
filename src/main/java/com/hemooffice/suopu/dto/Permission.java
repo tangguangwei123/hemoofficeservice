@@ -2,7 +2,7 @@ package com.hemooffice.suopu.dto;
 
 import java.util.Date;
 
-public class Resource {
+public class Permission {
     private Integer id;
 
     private Integer parentId;

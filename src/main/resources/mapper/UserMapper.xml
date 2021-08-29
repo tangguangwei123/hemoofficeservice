@@ -61,4 +61,11 @@
     ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
     from oa_user
   </select>
+  <!--根据账户查找用户-->
+  <select id="findUserByUserAccount" resultType="com.hemooffice.suopu.dto.User" >
+    select USER_ID, USER_NAME, SEX, USER_ACCOUNT, PASSWORD, EMAIL, MOBILE, TELL, HIDDEN_TELL,
+    ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
+    from oa_user where USER_ACCOUNT = #{userAccount,jdbcType=INTEGER}
+  </select>
+
 </mapper>

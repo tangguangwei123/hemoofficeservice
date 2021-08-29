@@ -11,6 +11,7 @@ public class OaActCategory {
     @NotNull(message = "审批排序不能为空")
     private Integer orderNum;
     @NotNull(message = "发起人不可撤销不能为空")
+
     private Integer irrevocable;
 
     private Date createDate;
