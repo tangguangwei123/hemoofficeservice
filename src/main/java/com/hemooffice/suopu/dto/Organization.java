@@ -13,6 +13,8 @@ public class Organization {
 
     private Date createTime;
 
+    private Integer active;
+
     public Integer getOrgId() {
         return orgId;
     }
@@ -51,5 +53,21 @@ public class Organization {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getActive(){ return active; }
+
+    public void setActive(Integer active){ this.active = active;}
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "orgId=" + orgId +
+                ", parentId=" + parentId +
+                ", orgName='" + orgName + '\'' +
+                ", orderNum=" + orderNum +
+                ", createTime=" + createTime +
+                ", active=" + active +
+                '}';
     }
 }

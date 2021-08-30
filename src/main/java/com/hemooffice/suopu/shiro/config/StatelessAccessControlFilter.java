@@ -84,8 +84,6 @@ public class StatelessAccessControlFilter extends BasicHttpAuthenticationFilter 
             return true;
         }
 
-        logger.info("请求路径:"+((HttpServletRequest) request).getServletPath());
-
         if (null == token) {
             String msg = "token为空！";
             throw new IllegalStateException(msg);

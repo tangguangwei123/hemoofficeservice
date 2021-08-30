@@ -124,7 +124,6 @@ public class UserRealm extends AuthorizingRealm {
                 logger.error("执行Shiro登陆认证:账户"+user.getUserName()+"已停用");
                 throw new AuthorizationException("账户已停用！");
             }
-
             // 密码验证
             if (!JWTUtils.verify(token, userAccount, user.getPassword())) {
                 throw new IncorrectCredentialsException("token验证异常:无效token");

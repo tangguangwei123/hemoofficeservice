@@ -1,8 +1,9 @@
 package com.hemooffice.suopu.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class User {
+public class User implements Serializable {
     private Integer userId;
 
     private String userName;
@@ -12,6 +13,8 @@ public class User {
     private String userAccount;
 
     private String password;
+
+    private String signature;
 
     private String email;
 
@@ -58,11 +61,11 @@ public class User {
     }
 
     public String getUserAccount() {
-        return userAccount;
+        return userAccount.toUpperCase();
     }
 
     public void setUserAccount(String userAccount) {
-        this.userAccount = userAccount == null ? null : userAccount.trim();
+        this.userAccount = userAccount == null ? null : userAccount.trim().toUpperCase();
     }
 
     public String getPassword() {
@@ -72,6 +75,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
     }
+
+    public String getSignature() {return signature; }
+
+    public void setSignature(String signature) { this.signature = signature == null ? null : signature.trim(); }
 
     public String getEmail() {
         return email;
@@ -161,6 +168,7 @@ public class User {
                 ", sex='" + sex + '\'' +
                 ", userAccount='" + userAccount + '\'' +
                 ", password='" + password + '\'' +
+                ", signature='" + signature + '\'' +
                 ", email='" + email + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", tell='" + tell + '\'' +

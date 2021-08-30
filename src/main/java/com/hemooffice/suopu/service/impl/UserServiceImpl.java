@@ -83,6 +83,10 @@ public class UserServiceImpl implements UserService {
             throw new CusSystemException("用户密码MD5加密异常！");
         }
         //验证成功，返回token
-        return   JWTUtils.sign(user.getUserAccount(), user.getPassword());
+        String token = JWTUtils.sign(dUser.getUserAccount(), dUser.getPassword());
+        if(token == null){
+            throw new CusSystemException("用户登录生成token异常！");
+        }
+        return token;
     }
 }

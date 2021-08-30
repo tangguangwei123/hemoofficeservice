@@ -2,27 +2,37 @@ package com.hemooffice.suopu.controller;
 
 import com.hemooffice.suopu.constant.GlobalParam;
 import com.hemooffice.suopu.dto.Msg;
+import com.hemooffice.suopu.dto.Organization;
 import com.hemooffice.suopu.dto.User;
 import com.hemooffice.suopu.exception.CusSystemException;
 import com.hemooffice.suopu.exception.UserAuthException;
+import com.hemooffice.suopu.service.OrganizationService;
 import com.hemooffice.suopu.service.UserService;
 import com.hemooffice.suopu.utils.FileUtil;
 import com.hemooffice.suopu.utils.IOUtils;
 import com.hemooffice.suopu.utils.RSAUtil;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import sun.nio.cs.ext.MS874;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api")
@@ -31,6 +41,21 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrganizationService organizationService;
+    //redis
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String,Object> redisTemplate;
+
+    /**
+     * 调试测试
+     * @return
+     */
+    @GetMapping("/test")
+    public Msg test(){
+        logger.info("/api/test 请求成功！");
+        return Msg.send(100,"测试成功！");
+    }
     /**
      * 获取加密公钥
      * @return
@@ -92,7 +117,6 @@ public class UserController {
      * @return
      */
     @GetMapping(value = "/401",produces = "application/json;charset=utf-8")
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public Msg unauthorized(int status,String message) {
         logger.error("status:"+status + "message?:"+message);
         return Msg.send(status,message);
@@ -108,8 +132,21 @@ public class UserController {
         logger.info("登录传入参数："+user.toString());
         //获取token
         String token = null;
+        User dUser = null;
+        Organization organization = null;
         try {
              token = userService.login(user);
+             //根据userAccount获取数据库用户
+             dUser = userService.findUserByUserAccount(user.getUserAccount());
+             if(dUser == null){
+                 return Msg.send(403,"用户信息为空！");
+             }
+             //根据登录当前登录用户加载机构信息
+            organization = organizationService.findOrganizationByUserId(dUser.getUserId());
+            //使用token做主键 将user信息存入redis
+            redisTemplate.opsForValue().set(token,dUser,GlobalParam.CACHETIME,TimeUnit.SECONDS);
+            //存入机构信息到redis
+            redisTemplate.opsForValue().set("organization:"+dUser.getUserId(),organization,GlobalParam.CACHETIME,TimeUnit.SECONDS);
         } catch (UserAuthException e) {
             e.printStackTrace();
             return Msg.send(403,e.getMessage());
@@ -117,7 +154,34 @@ public class UserController {
             e.printStackTrace();
             return Msg.fail(500,e.getMessage(),null);
         }
+        //返回信息集合
+        Map<String,Object> resMap = new HashMap<String,Object>();
+        resMap.put("token",token);
+        resMap.put("user",dUser);
+        resMap.put("organization",organization);
+        return Msg.success(resMap);
+    }
 
-        return Msg.success(token);
+    /**
+     * 退出登录
+     * @return
+     */
+    @GetMapping("/logout")
+    public Msg logout(){
+        //获取用户、机构信心
+        User user = null;
+        try{
+            //清空redis
+            Set<String> keys = redisTemplate.keys("*");
+            redisTemplate.delete(keys);
+            //shiro登出
+            SecurityUtils.getSubject().logout();
+
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            logger.error("登出系统:"+e.getMessage());
+            return Msg.send(401,"登录已失效!");
+        }
+        return Msg.send(401,"注销登录");
     }
 }

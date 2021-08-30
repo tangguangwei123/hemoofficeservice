@@ -8,31 +8,13 @@
     <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from oa_organization
-    where ORG_ID = #{orgId,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.hemooffice.suopu.dto.Organization" >
-    insert into oa_organization (ORG_ID, PARENT_ID, ORG_NAME, 
-      ORDER_NUM, CREATE_TIME)
-    values (#{orgId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{orgName,jdbcType=VARCHAR}, 
-      #{orderNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.Organization" >
-    update oa_organization
-    set PARENT_ID = #{parentId,jdbcType=INTEGER},
-      ORG_NAME = #{orgName,jdbcType=VARCHAR},
-      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
-    where ORG_ID = #{orgId,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select ORG_ID, PARENT_ID, ORG_NAME, ORDER_NUM, CREATE_TIME
-    from oa_organization
-    where ORG_ID = #{orgId,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select ORG_ID, PARENT_ID, ORG_NAME, ORDER_NUM, CREATE_TIME
-    from oa_organization
+  <!--根据userId查询机构信息-->
+  <select id="findOrganizationByUserId" resultType="com.hemooffice.suopu.dto.Organization" parameterType="java.lang.Integer" >
+   SELECT *
+    FROM OA_USER U,
+        OA_ORANIZATION O
+   WHERE U.ORG_ID = O.ORG_ID
+     AND O.ACTIVE = 1
+     AND U.USER_ID = #{userId,jdbcType=INTEGER}
   </select>
 </mapper>
