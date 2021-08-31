@@ -144,9 +144,9 @@ public class UserController {
              //根据登录当前登录用户加载机构信息
             organization = organizationService.findOrganizationByUserId(dUser.getUserId());
             //使用token做主键 将user信息存入redis
-            redisTemplate.opsForValue().set(token,dUser,GlobalParam.CACHETIME,TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(token+ ":user",dUser,GlobalParam.CACHETIME,TimeUnit.SECONDS);
             //存入机构信息到redis
-            redisTemplate.opsForValue().set("organization:"+dUser.getUserId(),organization,GlobalParam.CACHETIME,TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set(token+ ":organization",organization,GlobalParam.CACHETIME,TimeUnit.SECONDS);
         } catch (UserAuthException e) {
             e.printStackTrace();
             return Msg.send(403,e.getMessage());
