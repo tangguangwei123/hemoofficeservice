@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.PrivateKey;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -88,5 +89,15 @@ public class UserServiceImpl implements UserService {
             throw new CusSystemException("用户登录生成token异常！");
         }
         return token;
+    }
+
+    /**
+     * 根据机构id获取机构所有用户
+     * @param orgId
+     * @return
+     */
+    @Override
+    public List<User> findUsersByOrgId(Integer orgId) {
+        return userMapper.findUsersByOrgId(orgId);
     }
 }

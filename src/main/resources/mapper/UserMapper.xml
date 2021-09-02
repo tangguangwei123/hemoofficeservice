@@ -18,54 +18,32 @@
     <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP" />
   </resultMap>
-  <insert id="insert" parameterType="com.hemooffice.suopu.dto.User" >
-    insert into oa_user (USER_ID, USER_NAME, SEX, 
-      USER_ACCOUNT, PASSWORD, EMAIL, 
-      MOBILE, TELL, HIDDEN_TELL, 
-      ORDER_NUM, ORG_ID, STATUS, 
-      CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
-      )
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, 
-      #{userAccount,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{mobile,jdbcType=VARCHAR}, #{tell,jdbcType=VARCHAR}, #{hiddenTell,jdbcType=INTEGER}, 
-      #{orderNum,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.User" >
-    update oa_user
-    set USER_NAME = #{userName,jdbcType=VARCHAR},
-      SEX = #{sex,jdbcType=CHAR},
-      USER_ACCOUNT = #{userAccount,jdbcType=VARCHAR},
-      PASSWORD = #{password,jdbcType=VARCHAR},
-      EMAIL = #{email,jdbcType=VARCHAR},
-      MOBILE = #{mobile,jdbcType=VARCHAR},
-      TELL = #{tell,jdbcType=VARCHAR},
-      HIDDEN_TELL = #{hiddenTell,jdbcType=INTEGER},
-      ORDER_NUM = #{orderNum,jdbcType=INTEGER},
-      ORG_ID = #{orgId,jdbcType=INTEGER},
-      STATUS = #{status,jdbcType=CHAR},
-      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
-      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
-      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}
-    where USER_ID = #{userId,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select USER_ID, USER_NAME, SEX, USER_ACCOUNT, PASSWORD, EMAIL, MOBILE, TELL, HIDDEN_TELL, 
-    ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
-    from oa_user
-    where USER_ID = #{userId,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select USER_ID, USER_NAME, SEX, USER_ACCOUNT, PASSWORD, EMAIL, MOBILE, TELL, HIDDEN_TELL, 
-    ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
-    from oa_user
-  </select>
+
   <!--根据账户查找用户-->
   <select id="findUserByUserAccount" resultType="com.hemooffice.suopu.dto.User" >
     select USER_ID, USER_NAME, SEX, USER_ACCOUNT, PASSWORD, EMAIL, MOBILE, TELL, HIDDEN_TELL,
     ORDER_NUM, ORG_ID, STATUS, CREATE_TIME, MODIFY_TIME, LAST_LOGIN_TIME
     from oa_user where USER_ACCOUNT = #{userAccount,jdbcType=INTEGER}
+  </select>
+  <!--根据机构id获取机构所有用户-->
+  <select id="findUsersByOrgId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.User">
+    SELECT U.USER_ID,
+			 U.USER_NAME,
+			 U.USER_ACCOUNT,
+			 U.TELL,
+			 U.`STATUS`,
+			 U.SIGNATURE,
+			 U.SEX,
+			 U.ORG_ID,
+			 U.ORDER_NUM,
+			 U.MODIFY_TIME,
+			 U.MOBILE,
+			 U.LAST_LOGIN_TIME,
+			 U.HIDDEN_TELL,
+			 U.EMAIL,
+			 U.CREATE_TIME
+  FROM `OA_USER` U
+ WHERE U.ORG_ID = #{orgId,jdbcType=INTEGER}
   </select>
 
 </mapper>

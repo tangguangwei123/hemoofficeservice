@@ -11,6 +11,7 @@ import com.hemooffice.suopu.service.UserService;
 import com.hemooffice.suopu.utils.FileUtil;
 import com.hemooffice.suopu.utils.IOUtils;
 import com.hemooffice.suopu.utils.RSAUtil;
+import com.hemooffice.suopu.utils.SessionUtil;
 import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +29,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.security.KeyPair;
 import java.security.PublicKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -43,6 +41,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private OrganizationService organizationService;
+    @Autowired
+    private SessionUtil sessionUtil;
     //redis
     @Resource(name = "redisTemplate")
     private RedisTemplate<String,Object> redisTemplate;
@@ -183,5 +183,22 @@ public class UserController {
             return Msg.send(401,"登录已失效!");
         }
         return Msg.send(401,"注销登录");
+    }
+
+    /**
+     * 获取当前登陆机构所有用户
+     * @return
+     */
+    @GetMapping("/currentorg-userlist")
+    public Msg getCrrentOrgUserList(){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        //查询所有用户
+        List<User> userList = userService.findUsersByOrgId(organization.getOrgId());
+
+        return Msg.success(userList);
     }
 }

@@ -136,12 +136,12 @@ public class UserRealm extends AuthorizingRealm {
             try{
                 requestServletPath = redisTemplate.opsForValue().get("requestServletPath").toString();
                if(!GlobalParam.IGNOREREFRESHSERVLETPATH.contains(requestServletPath)){
-                   user = (User) redisTemplate.opsForValue().get(token);
-                   redisOrganization = (Organization)redisTemplate.opsForValue().get(user.getUserId() + "");
-                   redisTemplate.opsForValue().set(token,user, GlobalParam.CACHETIME, TimeUnit.SECONDS);
-                   redisTemplate.opsForValue().set(user.getUserId()+ "",redisOrganization,GlobalParam.CACHETIME,TimeUnit.SECONDS);
+                   redisOrganization = (Organization)redisTemplate.opsForValue().get(token+":organization");
+                   redisTemplate.opsForValue().set(token+":user",user, GlobalParam.CACHETIME, TimeUnit.SECONDS);
+                   redisTemplate.opsForValue().set(token+":organization",redisOrganization,GlobalParam.CACHETIME,TimeUnit.SECONDS);
                }
             }catch (Exception e){
+                e.printStackTrace();
                 throw new UnknownAccountException("用户身份认证异常！");
             }
             return new SimpleAuthenticationInfo(token, token, token+user.getUserId());

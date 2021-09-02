@@ -12,6 +12,10 @@ public class User implements Serializable {
 
     private String userAccount;
 
+    private String loginAlias;
+
+    private String empNbm;
+
     private String password;
 
     private String signature;
@@ -67,6 +71,14 @@ public class User implements Serializable {
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount == null ? null : userAccount.trim().toUpperCase();
     }
+
+    public String getLoginAlias(){return loginAlias; }
+
+    public void setLoginAlias(String loginAlias) {this.loginAlias = loginAlias == null ? null : loginAlias.trim(); }
+
+    public String getEmpNbm(){ return empNbm; }
+
+    public void setEmpNbm(String empNbm) {this.empNbm = empNbm == null ? null : empNbm.trim(); }
 
     public String getPassword() {
         return password;

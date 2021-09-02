@@ -12,7 +12,7 @@
   <select id="findOrganizationByUserId" resultType="com.hemooffice.suopu.dto.Organization" parameterType="java.lang.Integer" >
    SELECT *
     FROM OA_USER U,
-        OA_ORANIZATION O
+        OA_ORGANIZATION O
    WHERE U.ORG_ID = O.ORG_ID
      AND O.ACTIVE = 1
      AND U.USER_ID = #{userId,jdbcType=INTEGER}

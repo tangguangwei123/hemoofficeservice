@@ -89,7 +89,7 @@ public class StatelessAccessControlFilter extends BasicHttpAuthenticationFilter 
             throw new IllegalStateException(msg);
         }
         //从redis中查询用户信息
-        User user = (User)redisTemplate.opsForValue().get(token);
+        User user = (User)redisTemplate.opsForValue().get(token+":user");
         //将请求路径放入redis
         redisTemplate.opsForValue().set("requestServletPath",((HttpServletRequest) request).getServletPath(),10, TimeUnit.SECONDS);
         //如果没有用户信息，重新登陆

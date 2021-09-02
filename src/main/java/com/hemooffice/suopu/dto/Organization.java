@@ -1,8 +1,10 @@
 package com.hemooffice.suopu.dto;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Organization {
+public class Organization implements Serializable {
     private Integer orgId;
 
     private Integer parentId;
@@ -11,7 +13,7 @@ public class Organization {
 
     private Integer orderNum;
 
-    private Date createTime;
+    private String createTime;
 
     private Integer active;
 
@@ -47,12 +49,14 @@ public class Organization {
         this.orderNum = orderNum;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(createTime);
+        this.createTime = dateString;
     }
 
     public Integer getActive(){ return active; }
