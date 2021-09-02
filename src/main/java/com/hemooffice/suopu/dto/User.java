@@ -1,29 +1,38 @@
 package com.hemooffice.suopu.dto;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
+//参考文档地址: https://blog.csdn.net/qq_32258777/article/details/86743416
 public class User implements Serializable {
     private Integer userId;
-
+    @Pattern(regexp = "/^[\\u4E00-\\u9FA5A-Za-z]+$/",message = "姓名必须是汉字或字母组成")
+    @Length(min=2,max=15, message = "姓名长度在2-15")
     private String userName;
-
+    @NotNull(message = "性别不能为空")
     private String sex;
-
+    @Pattern(regexp = "/^[a-zA-Z0-9_]{6,20}$/",message = "登录账户必须6-20长度的字母数字或下划线组成")
     private String userAccount;
-
+    @Length(min=1, max = 15, message = "登录别名长度为1-15")
     private String loginAlias;
-
+    @Length(min=1, max = 15, message = "员工编号长度为1-15")
     private String empNbm;
 
     private String password;
-
+    @Length(max=80, message = "签名不能多余80个字符")
     private String signature;
-
+    @Email(message = "无效邮箱")
     private String email;
-
+    @Pattern(regexp = "/^1[34578]\\d{9}$/",message = "手机号码无效")
     private String mobile;
-
+    @Pattern(regexp = "^[0-9]*$", message = "电话号码必须是数字")
+    @Length(min = 5, max=9,message = "电话号码长度在5-9之间")
     private String tell;
 
     private Integer hiddenTell;

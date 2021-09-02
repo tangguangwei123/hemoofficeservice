@@ -201,4 +201,13 @@ public class UserController {
 
         return Msg.success(userList);
     }
+
+    /**
+     * 新增用户
+     * @return
+     */
+    @PostMapping("/adduser")
+    public Msg addUser(@RequestBody User user){
+
+    }
 }
