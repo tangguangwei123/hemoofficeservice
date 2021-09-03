@@ -27,4 +27,10 @@ public interface UserService {
      * @return
      */
     public List<User> findUsersByOrgId(Integer orgId);
+
+    /**
+     * 新增用户
+     * @return
+     */
+    public int addUser(User user) throws CusSystemException;
 }

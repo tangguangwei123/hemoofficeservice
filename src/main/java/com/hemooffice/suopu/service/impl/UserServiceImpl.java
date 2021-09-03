@@ -100,4 +100,21 @@ public class UserServiceImpl implements UserService {
     public List<User> findUsersByOrgId(Integer orgId) {
         return userMapper.findUsersByOrgId(orgId);
     }
+
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     */
+    @Override
+    public int addUser(User user) throws CusSystemException {
+        //设置初始密码为 123456
+        try {
+            user.setPassword(CommonUtils.userPassMd5("123456"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new CusSystemException("设置初始密码异常！");
+        }
+        return userMapper.addUser(user);
+    }
 }

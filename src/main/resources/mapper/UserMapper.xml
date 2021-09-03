@@ -45,5 +45,9 @@
   FROM `OA_USER` U
  WHERE U.ORG_ID = #{orgId,jdbcType=INTEGER}
   </select>
-
+    <!-- 新增用户 -->
+    <insert id="addUser" parameterType="com.hemooffice.suopu.dto.User" useGeneratedKeys="true" keyProperty="userId" keyColumn="USER_ID" >
+		INSERT INTO `OA_USER`(USER_NAME,SEX,USER_ACCOUNT,LOGIN_ALIAS,EMP_NBM,`PASSWORD`, EMAIL, MOBILE,TELL,HIDDEN_TELL,ORDER_NUM,ORG_ID,CREATE_TIME)
+              VALUES(#{userName},#{sex},#{userAccount},#{loginAlias},#{empNbm},#{password},#{email},#{mobile},#{tell},#{hiddenTell},#{orderNum},#{orgId},now())
+	</insert>
 </mapper>

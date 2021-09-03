@@ -13,6 +13,7 @@ import com.hemooffice.suopu.utils.IOUtils;
 import com.hemooffice.suopu.utils.RSAUtil;
 import com.hemooffice.suopu.utils.SessionUtil;
 import org.apache.shiro.SecurityUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
+@Validated
 @RequestMapping("/api")
 public class UserController {
     //日志
@@ -128,7 +130,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public Msg login(@Validated @RequestBody User user, HttpServletRequest request){
+    public Msg login(@RequestBody User user, HttpServletRequest request){
         logger.info("登录传入参数："+user.toString());
         //获取token
         String token = null;
@@ -207,7 +209,31 @@ public class UserController {
      * @return
      */
     @PostMapping("/adduser")
-    public Msg addUser(@RequestBody User user){
+    public Msg addUser(@Validated @RequestBody User user){
+        //得到当前登录机构信息放入参数
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
 
+        user.setOrgId(organization.getOrgId());
+        //添加
+        try {
+            userService.addUser(user);
+        } catch (CusSystemException e) {
+            e.printStackTrace();
+            return Msg.fail(500,e.getMessage(),null);
+        }
+
+        return Msg.success(user.getUserId());
+    }
+
+    /**
+     * 根据用户名查找用户
+     * @return
+     */
+    @GetMapping("/getuser-useraccount")
+    public Msg findUserByUerAccount(@NotBlank(message = "用户账户不能为空!") String userAccount){
+        return Msg.success(userService.findUserByUserAccount(userAccount));
     }
 }

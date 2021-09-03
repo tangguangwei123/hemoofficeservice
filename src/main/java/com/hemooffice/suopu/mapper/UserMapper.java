@@ -19,4 +19,11 @@ public interface UserMapper {
      * @return
      */
     List<User> findUsersByOrgId(@Param("orgId") Integer orgId);
+
+    /**
+     * 新增用户
+     * @param user
+     * @return
+     */
+    int addUser(User user);
 }
