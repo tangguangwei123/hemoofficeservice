@@ -1,16 +1,20 @@
 package com.hemooffice.suopu.dto;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 
 public class Dept {
     private Integer deptId;
-
+    
     private Integer parentId;
 
     private Integer orgId;
-
+    @NotBlank(message = "部门名称不能为空")
+    @Length(max = 30, message = "部门名称过长")
     private String deptName;
-
+    @Length(max= 160,message = "部门描述过长")
     private String deptDesc;
 
     private Integer orderNum;
