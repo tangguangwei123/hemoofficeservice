@@ -30,8 +30,29 @@ public interface DeptMapper {
 
     /**
      * 删除部门用户
-     * @param userDeptList
+     * @param deptId
      * @return
      */
-    int deleteDeptUser(@Param("userDeptList") List<UserDept> userDeptList);
+    int deleteDeptUser(@Param("deptId") Integer deptId);
+
+    /**
+     * 删除部门
+     * @param deptId
+     * @return
+     */
+    int deleteDept(@Param("deptId") Integer deptId);
+
+    /**
+     * 查询指定部门下面用户
+     * @param deptId
+     * @return
+     */
+    List<Integer> findUserIdsByDeptId(@Param("deptId") Integer deptId);
+
+    /**
+     * 查找子部门通过部门id
+     * @param deptId
+     * @return
+     */
+    List<Dept> findChildrenDeptByDeptId(@Param("deptId") Integer deptId);
 }

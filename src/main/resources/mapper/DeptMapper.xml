@@ -13,10 +13,12 @@
   </resultMap>
   <!--加载指定机构所有部门-->
   <select id="findDeptByOrgId" resultType="com.hemooffice.suopu.dto.Dept" >
-    SELECT *
-	  FROM OA_DEPT D
-     WHERE D.ACTIVE = 1
-       AND D.ORG_ID = #{orgId,jdbcType=INTEGER}
+       SELECT D.*
+	     FROM `OA_DEPT` D
+  LEFT JOIN `OA_DEPT` D1
+	      ON D.PARENT_ID = D1.DEPT_ID
+		 AND D.ACTIVE = 1
+		 AND D1.ACTIVE =1
   </select>
 
   <!--新增部门-->
@@ -35,8 +37,24 @@
       </foreach>
   </insert>
   <!--删除部门用户-->
-  <delete id="deleteDeptUser" parameterType="com.hemooffice.suopu.dto.UserDept">
-    DELETE FROM `OA_USER_DEPT` UD WHERE UD.DEPT_ID = #{deptId}
+  <delete id="deleteDeptUser" parameterType="java.lang.Integer">
+    DELETE FROM `OA_USER_DEPT`  WHERE DEPT_ID = #{deptId}
   </delete>
+  <!--删除部门-->
+  <delete id="deleteDept" parameterType="java.lang.Integer" >
+     UPDATE `OA_DEPT` SET ACTIVE = 0 WHERE DEPT_ID = #{deptId}
+  </delete>
+  <!--查询指定部门下面用户-->
+  <select id="findUserIdsByDeptId" parameterType="java.lang.Integer">
+      SELECT *
+        FROM `OA_USER_DEPT`
+       WHERE DEPT_ID = #{deptId}
+  </select>
 
+  <select id="findChildrenDeptByDeptId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Dept">
+      SELECT *
+        FROM `OA_DEPT`
+       WHERE ACTIVE = 1
+         AND PARENT_ID = #{deptId}
+  </select>
 </mapper>

@@ -57,4 +57,14 @@ public class DeptController {
 
         return Msg.success(deptService.setDeptUser(deptParam));
     }
+
+    /**
+     * 删除部门
+     * @param deptId
+     * @return
+     */
+    @GetMapping("/dept-delete")
+    public Msg deleteDept(@RequestParam("deptId") Integer deptId){
+        return Msg.success(deptService.deleteDept(deptId));
+    }
 }

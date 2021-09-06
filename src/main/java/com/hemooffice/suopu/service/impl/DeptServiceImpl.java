@@ -3,12 +3,14 @@ package com.hemooffice.suopu.service.impl;
 import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
 import com.hemooffice.suopu.dto.UserDept;
+import com.hemooffice.suopu.exception.CusSystemException;
 import com.hemooffice.suopu.mapper.DeptMapper;
 import com.hemooffice.suopu.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class DeptServiceImpl implements DeptService {
     }
 
     /**
-     * 设置部门用户
+     * 设置部门
      * @param deptParam
      * @return
      */
@@ -52,6 +54,22 @@ public class DeptServiceImpl implements DeptService {
         }
 
         deptMapper.addDeptUser(userDeptList);
+
+        return result;
+    }
+
+    /**
+     * 删除部门
+     * @param deptId
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor={Exception.class})
+    public int deleteDept(Integer deptId) {
+        //先删除部门下面用户
+        deptMapper.deleteDeptUser(deptId);
+        //然后删除部门
+        int result = deptMapper.deleteDept(deptId);
 
         return result;
     }

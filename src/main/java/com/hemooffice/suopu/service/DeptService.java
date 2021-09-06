@@ -14,9 +14,16 @@ public interface DeptService {
     public List<Dept> findDeptByOrgId(Integer orgId);
 
     /**
-     * 设置部门用户
+     * 设置部门
      * @param deptParam
      * @return
      */
     public int setDeptUser(DeptParam deptParam);
+
+    /**
+     * 删除部门
+     * @param deptId
+     * @return
+     */
+    public int deleteDept(Integer deptId);
 }
