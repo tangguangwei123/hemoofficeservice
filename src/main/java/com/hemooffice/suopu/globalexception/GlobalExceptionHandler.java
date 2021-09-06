@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
             e.printStackTrace();
         } else {
             jsonObject.put("status", 500);
-            jsonObject.put("message", e.getMessage());
+            jsonObject.put("message", "系统异常，请联系技术人员！");
             e.printStackTrace();
         }
         return jsonObject;

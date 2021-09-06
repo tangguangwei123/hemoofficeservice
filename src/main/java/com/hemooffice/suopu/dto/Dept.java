@@ -92,4 +92,19 @@ public class Dept {
     public Integer getActive() { return active; }
 
     public void setActive(Integer active) { this.active = active; }
+
+    @Override
+    public String toString() {
+        return "Dept{" +
+                "deptId=" + deptId +
+                ", parentId=" + parentId +
+                ", orgId=" + orgId +
+                ", deptName='" + deptName + '\'' +
+                ", deptDesc='" + deptDesc + '\'' +
+                ", orderNum=" + orderNum +
+                ", createTime=" + createTime +
+                ", modifyTime=" + modifyTime +
+                ", active=" + active +
+                '}';
+    }
 }

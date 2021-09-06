@@ -1,6 +1,7 @@
 package com.hemooffice.suopu.controller;
 
 import com.hemooffice.suopu.dto.Dept;
+import com.hemooffice.suopu.dto.DeptParam;
 import com.hemooffice.suopu.dto.Msg;
 import com.hemooffice.suopu.dto.Organization;
 import com.hemooffice.suopu.service.DeptService;
@@ -42,12 +43,18 @@ public class DeptController {
 
     /**
      * 新增部门
-     * @param dept
+     * @param deptParam
      * @return
      */
     @PostMapping("/adddept")
-    public Msg addDept(@Validated @RequestBody Dept dept){
+    public Msg addDept(@Validated @RequestBody DeptParam deptParam){
+        //获取当前的登录部门
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        deptParam.setOrgId(organization.getOrgId());
 
-        return Msg.success(null);
+        return Msg.success(deptService.setDeptUser(deptParam));
     }
 }

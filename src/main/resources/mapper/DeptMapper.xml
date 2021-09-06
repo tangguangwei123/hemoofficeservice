@@ -19,4 +19,24 @@
        AND D.ORG_ID = #{orgId,jdbcType=INTEGER}
   </select>
 
+  <!--新增部门-->
+  <insert id="addDept" useGeneratedKeys="true" keyProperty="deptId" keyColumn="DEPT_ID" >
+    INSERT INTO `OA_DEPT`(PARENT_ID,ORG_ID,DEPT_NAME,DEPT_DESC,ORDER_NUM,CREATE_TIME)
+				   VALUES(#{parentId},#{orgId},#{deptName},#{deptDesc},#{orderNum},now())
+  </insert>
+  <!--新增部门用户-->
+  <insert id="addDeptUser">
+    INSERT INTO `OA_USER_DEPT`(USER_ID,DEPT_ID,CREATE_TIME)
+                                            VALUES
+      <foreach collection="userDeptList" item="item" index="index" separator=",">
+          (
+          #{item.userId},#{item.deptId},now()
+          )
+      </foreach>
+  </insert>
+  <!--删除部门用户-->
+  <delete id="deleteDeptUser" parameterType="com.hemooffice.suopu.dto.UserDept">
+    DELETE FROM `OA_USER_DEPT` UD WHERE UD.DEPT_ID = #{deptId}
+  </delete>
+
 </mapper>
