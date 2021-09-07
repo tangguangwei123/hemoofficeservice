@@ -3,6 +3,7 @@ package com.hemooffice.suopu.service.impl;
 import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
 import com.hemooffice.suopu.dto.DeptUserRelationship;
+import com.hemooffice.suopu.dto.User;
 import com.hemooffice.suopu.mapper.DeptMapper;
 import com.hemooffice.suopu.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,22 +37,30 @@ public class DeptServiceImpl implements DeptService {
     @Override
     @Transactional(rollbackFor={Exception.class})
     public int setDeptUser(DeptParam deptParam) {
-        //新增部门
-        int result = deptMapper.addDept(deptParam);
+        System.out.print("提交的数据:"+deptParam.toString());
+        //如果deptId == null则新增部门 ，如果不为null 则编辑部门
+        int result = 0;
+        if(deptParam.getDeptId() == null){
+            //新增部门
+             result = deptMapper.addDept(deptParam);
 
-        if(deptParam.getDeptUserKeys().length == 0){
-            return result;
-        }
-        //新增部门用户
-        List<DeptUserRelationship> userDeptList = new ArrayList<>();
-        for (int i = 0; i < deptParam.getDeptUserKeys().length; i++){
-            DeptUserRelationship userDept = new DeptUserRelationship();
-            userDept.setUserId(deptParam.getDeptUserKeys()[i]);
-            userDept.setDeptId(deptParam.getDeptId());
-            userDeptList.add(userDept);
-        }
+            if(deptParam.getDeptUserKeys().length == 0){
+                return result;
+            }
+            //新增部门用户
+            List<DeptUserRelationship> userDeptList = new ArrayList<>();
+            for (int i = 0; i < deptParam.getDeptUserKeys().length; i++){
+                DeptUserRelationship userDept = new DeptUserRelationship();
+                userDept.setUserId(deptParam.getDeptUserKeys()[i]);
+                userDept.setDeptId(deptParam.getDeptId());
+                userDeptList.add(userDept);
+            }
 
-        deptMapper.addDeptUser(userDeptList);
+            deptMapper.addDeptUser(userDeptList);
+        }else {
+            //编辑部门
+
+        }
 
         return result;
     }
@@ -78,5 +87,15 @@ public class DeptServiceImpl implements DeptService {
      */
     public List<Dept> findDeptListAndUserList(Integer orgId){
         return deptMapper.findDeptListAndUserList(orgId);
+    }
+
+    /**
+     * 查询指定部门下面用户
+     * @param deptId
+     * @return
+     */
+    @Override
+    public List<User> findUsersByDeptId(Integer deptId) {
+        return deptMapper.findUsersByDeptId(deptId);
     }
 }

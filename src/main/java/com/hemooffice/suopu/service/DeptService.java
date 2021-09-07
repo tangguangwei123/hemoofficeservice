@@ -2,6 +2,7 @@ package com.hemooffice.suopu.service;
 
 import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
+import com.hemooffice.suopu.dto.User;
 
 import java.util.List;
 
@@ -33,4 +34,11 @@ public interface DeptService {
      * @return
      */
     public List<Dept> findDeptListAndUserList(Integer orgId);
+
+    /**
+     *
+     * @param deptId
+     * @return
+     */
+    public List<User> findUsersByDeptId(Integer deptId);
 }

@@ -46,10 +46,28 @@
      UPDATE `OA_DEPT` SET ACTIVE = 0 WHERE DEPT_ID = #{deptId}
   </delete>
     <!--查询指定部门下面用户-->
-    <select id="findUserIdsByDeptId" parameterType="java.lang.Integer">
-      SELECT *
-        FROM `OA_USER_DEPT`
-       WHERE DEPT_ID = #{deptId}
+    <select id="findUsersByDeptId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.User">
+   SELECT  U.USER_ID,
+			U.USER_NAME,
+			U.USER_ACCOUNT,
+			U.TELL,
+			U.`STATUS`,
+			U.SIGNATURE,
+			U.SEX,
+			U.ORG_ID,
+			U.ORDER_NUM,
+			U.MODIFY_TIME,
+			U.MOBILE,
+			U.LOGIN_ALIAS,
+			U.EMP_NBM,
+			U.EMAIL,
+			U.CREATE_TIME,
+			U.HIDDEN_TELL
+      FROM `OA_USER_DEPT` UD,
+            `OA_USER` U
+     WHERE UD.USER_ID = U.USER_ID
+       AND U.`STATUS` = 1
+       AND UD.DEPT_ID = #{deptId}
   </select>
     <!--查找子部门-->
     <select id="findChildrenDeptByDeptId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Dept">

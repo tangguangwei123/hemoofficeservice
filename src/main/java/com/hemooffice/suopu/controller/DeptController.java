@@ -80,4 +80,16 @@ public class DeptController {
         }
         return Msg.success(deptService.findDeptListAndUserList(organization.getOrgId()));
     }
+
+    /**
+     * 查询指定部门下面用户
+     * @return
+     */
+    @GetMapping("/dept-users")
+    public Msg findUsersByDeptId(@RequestParam("deptId") Integer deptId){
+        if(deptId == null){
+           return Msg.send(505,"请选择部门！");
+        }
+        return Msg.success(deptService.findUsersByDeptId(deptId));
+    }
 }
