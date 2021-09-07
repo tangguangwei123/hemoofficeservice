@@ -1,6 +1,6 @@
 package com.hemooffice.suopu.dto;
 
-public class UserDept {
+public class DeptUserRelationship {
 
     private Integer userId;
 

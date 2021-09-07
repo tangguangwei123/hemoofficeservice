@@ -1,7 +1,7 @@
 package com.hemooffice.suopu.mapper;
 
 import com.hemooffice.suopu.dto.Dept;
-import com.hemooffice.suopu.dto.UserDept;
+import com.hemooffice.suopu.dto.DeptUserRelationship;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public interface DeptMapper {
      * @param userDeptList
      * @return
      */
-    int addDeptUser(@Param("userDeptList") List<UserDept> userDeptList);
+    int addDeptUser(@Param("userDeptList") List<DeptUserRelationship> userDeptList);
 
     /**
      * 删除部门用户
@@ -55,4 +55,11 @@ public interface DeptMapper {
      * @return
      */
     List<Dept> findChildrenDeptByDeptId(@Param("deptId") Integer deptId);
+
+    /**
+     * 加载当前机构所有部门和部门下用户
+     * @param orgId
+     * @return
+     */
+    List<Dept> findDeptListAndUserList(@Param("orgId") Integer orgId);
 }

@@ -71,7 +71,7 @@ public class User implements Serializable {
     }
 
     public String getUserAccount() {
-        return userAccount.toUpperCase();
+        return userAccount == null ? null : userAccount.toUpperCase();
     }
 
     public void setUserAccount(String userAccount) {

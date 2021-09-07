@@ -1,60 +1,122 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.hemooffice.suopu.mapper.DeptMapper" >
-  <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.Dept" >
-    <id column="DEPT_ID" property="deptId" jdbcType="INTEGER" />
-    <result column="PARENT_ID" property="parentId" jdbcType="INTEGER" />
-    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
-    <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR" />
-    <result column="DEPT_DESC" property="deptDesc" jdbcType="VARCHAR" />
-    <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <!--加载指定机构所有部门-->
-  <select id="findDeptByOrgId" resultType="com.hemooffice.suopu.dto.Dept" >
+    <resultMap id="BaseResultMap" type="com.hemooffice.suopu.dto.Dept">
+        <id column="DEPT_ID" property="deptId" jdbcType="INTEGER"/>
+        <result column="PARENT_ID" property="parentId" jdbcType="INTEGER"/>
+        <result column="ORG_ID" property="orgId" jdbcType="INTEGER"/>
+        <result column="DEPT_NAME" property="deptName" jdbcType="VARCHAR"/>
+        <result column="DEPT_DESC" property="deptDesc" jdbcType="VARCHAR"/>
+        <result column="ORDER_NUM" property="orderNum" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <!--加载指定机构所有部门-->
+    <select id="findDeptByOrgId" resultType="com.hemooffice.suopu.dto.Dept">
        SELECT D.*
 	     FROM `OA_DEPT` D
   LEFT JOIN `OA_DEPT` D1
 	      ON D.PARENT_ID = D1.DEPT_ID
-		 AND D.ACTIVE = 1
-		 AND D1.ACTIVE =1
+	  WHERE D.ACTIVE = 1
+		  AND D1.ACTIVE =1
+		  OR  (D.ACTIVE = 1 AND D1.DEPT_ID IS NULL)
   </select>
 
-  <!--新增部门-->
-  <insert id="addDept" useGeneratedKeys="true" keyProperty="deptId" keyColumn="DEPT_ID" >
+    <!--新增部门-->
+    <insert id="addDept" useGeneratedKeys="true" keyProperty="deptId" keyColumn="DEPT_ID">
     INSERT INTO `OA_DEPT`(PARENT_ID,ORG_ID,DEPT_NAME,DEPT_DESC,ORDER_NUM,CREATE_TIME)
 				   VALUES(#{parentId},#{orgId},#{deptName},#{deptDesc},#{orderNum},now())
   </insert>
-  <!--新增部门用户-->
-  <insert id="addDeptUser">
-    INSERT INTO `OA_USER_DEPT`(USER_ID,DEPT_ID,CREATE_TIME)
-                                            VALUES
-      <foreach collection="userDeptList" item="item" index="index" separator=",">
-          (
-          #{item.userId},#{item.deptId},now()
-          )
-      </foreach>
-  </insert>
-  <!--删除部门用户-->
-  <delete id="deleteDeptUser" parameterType="java.lang.Integer">
+    <!--新增部门用户-->
+    <insert id="addDeptUser">
+        INSERT INTO `OA_USER_DEPT`(USER_ID,DEPT_ID,CREATE_TIME)
+        VALUES
+        <foreach collection="userDeptList" item="item" index="index" separator=",">
+            (
+            #{item.userId},#{item.deptId},now()
+            )
+        </foreach>
+    </insert>
+    <!--删除部门用户-->
+    <delete id="deleteDeptUser" parameterType="java.lang.Integer">
     DELETE FROM `OA_USER_DEPT`  WHERE DEPT_ID = #{deptId}
   </delete>
-  <!--删除部门-->
-  <delete id="deleteDept" parameterType="java.lang.Integer" >
+    <!--删除部门-->
+    <delete id="deleteDept" parameterType="java.lang.Integer">
      UPDATE `OA_DEPT` SET ACTIVE = 0 WHERE DEPT_ID = #{deptId}
   </delete>
-  <!--查询指定部门下面用户-->
-  <select id="findUserIdsByDeptId" parameterType="java.lang.Integer">
+    <!--查询指定部门下面用户-->
+    <select id="findUserIdsByDeptId" parameterType="java.lang.Integer">
       SELECT *
         FROM `OA_USER_DEPT`
        WHERE DEPT_ID = #{deptId}
   </select>
-
-  <select id="findChildrenDeptByDeptId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Dept">
+    <!--查找子部门-->
+    <select id="findChildrenDeptByDeptId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Dept">
       SELECT *
         FROM `OA_DEPT`
        WHERE ACTIVE = 1
          AND PARENT_ID = #{deptId}
+  </select>
+    <!-- resultMap:映射实体类和字段之间的一一对应的关系 -->
+    <resultMap id="deptListAndUserListMap" type="com.hemooffice.suopu.dto.Dept">
+        <id column="DEPT_ID" property="deptId"></id>
+        <result column="DEPT_NAME" property="deptName"></result>
+        <result column="DEPT_DESC" property="deptDesc"></result>
+        <result column="ORG_ID" property="orgId"></result>
+        <result column="ACTIVE" property="active"></result>
+
+        <!-- 多对多关联映射：collection -->
+        <collection property="userList" ofType="com.hemooffice.suopu.dto.User">
+            <id column="USER_ID" property="userId"></id>
+            <result column="USER_NAME" property="userName"></result>
+            <result column="USER_ACCOUNT" property="userAccount"></result>
+            <result column="TELL" property="tell"></result>
+            <result column="STATUS" property="status"></result>
+            <result column="SIGNATURE" property="signature"></result>
+            <result column="SEX" property="sex"></result>
+            <result column="ORG_ID" property="orgId"></result>
+            <result column="ORDER_NUM" property="orderNum"></result>
+            <result column="MODIFY_TIME" property="modifyTime"></result>
+            <result column="MOBILE" property="mobile"></result>
+            <result column="LOGIN_ALIAS" property="loginAlias"></result>
+            <result column="EMP_NBM" property="empNbm"></result>
+            <result column="EMAIL" property="email"></result>
+            <result column="CREATE_TIME" property="createTime"></result>
+            <result column="HIDDEN_TELL" property="hiddenTell"></result>
+        </collection>
+    </resultMap>
+
+
+    <!--加载当前机构所有部门和部门下用户-->
+    <select id="findDeptListAndUserList" resultMap="deptListAndUserListMap">
+         SELECT  D.DEPT_ID,
+				D.DEPT_NAME,
+				D.DEPT_DESC,
+				D.ORG_ID,
+				D.ACTIVE,
+				U.USER_ID,
+				U.USER_NAME,
+				U.USER_ACCOUNT,
+				U.TELL,
+				U.`STATUS`,
+				U.SIGNATURE,
+				U.SEX,
+				U.ORG_ID,
+				U.ORDER_NUM,
+				U.MODIFY_TIME,
+				U.MOBILE,
+				U.LOGIN_ALIAS,
+				U.EMP_NBM,
+				U.EMAIL,
+				U.CREATE_TIME,
+				U.HIDDEN_TELL
+  FROM  `OA_DEPT` D LEFT JOIN `OA_USER_DEPT` UD ON D.DEPT_ID = UD.DEPT_ID
+										LEFT JOIN `OA_USER` U ON UD.USER_ID = U.USER_ID
+										LEFT JOIN `OA_DEPT` D1 ON D.PARENT_ID = D1.DEPT_ID
+WHERE (U.`STATUS` = 1 OR U.USER_ID IS NULL)
+  AND D.ACTIVE = 1
+	AND D.ORG_ID = #{orgId}
+	AND (D1.ACTIVE = 1 OR D1.DEPT_ID IS NULL)
   </select>
 </mapper>

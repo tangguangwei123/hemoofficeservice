@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
+import java.util.List;
 
 public class Dept {
     private Integer deptId;
@@ -24,6 +25,8 @@ public class Dept {
     private Date modifyTime;
 
     private Integer active;
+
+    private List<User> userList;
 
     public Integer getDeptId() {
         return deptId;
@@ -93,6 +96,14 @@ public class Dept {
 
     public void setActive(Integer active) { this.active = active; }
 
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
     @Override
     public String toString() {
         return "Dept{" +
@@ -105,6 +116,7 @@ public class Dept {
                 ", createTime=" + createTime +
                 ", modifyTime=" + modifyTime +
                 ", active=" + active +
+                ", userList=" + userList +
                 '}';
     }
 }

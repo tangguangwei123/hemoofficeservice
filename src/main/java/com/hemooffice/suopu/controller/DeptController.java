@@ -67,4 +67,17 @@ public class DeptController {
     public Msg deleteDept(@RequestParam("deptId") Integer deptId){
         return Msg.success(deptService.deleteDept(deptId));
     }
+
+    /**
+     * 加载当前机构所有部门和部门下用户
+      * @return
+     */
+    @GetMapping("/dept-user-list")
+    public Msg findDeptListAndUserList(){
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(deptService.findDeptListAndUserList(organization.getOrgId()));
+    }
 }

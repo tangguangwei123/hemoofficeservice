@@ -26,4 +26,11 @@ public interface DeptService {
      * @return
      */
     public int deleteDept(Integer deptId);
+
+    /**
+     * 加载当前机构所有部门和部门下用户
+     * @param orgId
+     * @return
+     */
+    public List<Dept> findDeptListAndUserList(Integer orgId);
 }

@@ -2,15 +2,13 @@ package com.hemooffice.suopu.service.impl;
 
 import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
-import com.hemooffice.suopu.dto.UserDept;
-import com.hemooffice.suopu.exception.CusSystemException;
+import com.hemooffice.suopu.dto.DeptUserRelationship;
 import com.hemooffice.suopu.mapper.DeptMapper;
 import com.hemooffice.suopu.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +43,9 @@ public class DeptServiceImpl implements DeptService {
             return result;
         }
         //新增部门用户
-        List<UserDept> userDeptList = new ArrayList<>();
+        List<DeptUserRelationship> userDeptList = new ArrayList<>();
         for (int i = 0; i < deptParam.getDeptUserKeys().length; i++){
-            UserDept userDept = new UserDept();
+            DeptUserRelationship userDept = new DeptUserRelationship();
             userDept.setUserId(deptParam.getDeptUserKeys()[i]);
             userDept.setDeptId(deptParam.getDeptId());
             userDeptList.add(userDept);
@@ -72,5 +70,13 @@ public class DeptServiceImpl implements DeptService {
         int result = deptMapper.deleteDept(deptId);
 
         return result;
+    }
+
+    /**
+     * 加载当前机构所有部门和部门下用户
+     * @return
+     */
+    public List<Dept> findDeptListAndUserList(Integer orgId){
+        return deptMapper.findDeptListAndUserList(orgId);
     }
 }
