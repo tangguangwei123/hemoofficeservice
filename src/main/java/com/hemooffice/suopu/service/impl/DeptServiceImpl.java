@@ -42,25 +42,28 @@ public class DeptServiceImpl implements DeptService {
         int result = 0;
         if(deptParam.getDeptId() == null){
             //新增部门
-             result = deptMapper.addDept(deptParam);
+            result = deptMapper.addDept(deptParam);
 
-            if(deptParam.getDeptUserKeys().length == 0){
-                return result;
-            }
-            //新增部门用户
-            List<DeptUserRelationship> userDeptList = new ArrayList<>();
-            for (int i = 0; i < deptParam.getDeptUserKeys().length; i++){
-                DeptUserRelationship userDept = new DeptUserRelationship();
-                userDept.setUserId(deptParam.getDeptUserKeys()[i]);
-                userDept.setDeptId(deptParam.getDeptId());
-                userDeptList.add(userDept);
-            }
-
-            deptMapper.addDeptUser(userDeptList);
         }else {
             //编辑部门
-
+            deptMapper.updateDept(deptParam);
+            //删除关联用户
+            deptMapper.deleteDeptUser(deptParam.getDeptId());
         }
+
+        if(deptParam.getDeptUserKeys().length == 0){
+            return result;
+        }
+        //新增部门用户
+        List<DeptUserRelationship> userDeptList = new ArrayList<>();
+        for (int i = 0; i < deptParam.getDeptUserKeys().length; i++){
+            DeptUserRelationship userDept = new DeptUserRelationship();
+            userDept.setUserId(deptParam.getDeptUserKeys()[i]);
+            userDept.setDeptId(deptParam.getDeptId());
+            userDeptList.add(userDept);
+        }
+
+        deptMapper.addDeptUser(userDeptList);
 
         return result;
     }

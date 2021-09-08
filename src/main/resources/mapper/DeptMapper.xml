@@ -105,7 +105,6 @@
         </collection>
     </resultMap>
 
-
     <!--加载当前机构所有部门和部门下用户-->
     <select id="findDeptListAndUserList" resultMap="deptListAndUserListMap">
          SELECT  D.DEPT_ID,
@@ -129,12 +128,18 @@
 				U.EMAIL,
 				U.CREATE_TIME,
 				U.HIDDEN_TELL
-  FROM  `OA_DEPT` D LEFT JOIN `OA_USER_DEPT` UD ON D.DEPT_ID = UD.DEPT_ID
-										LEFT JOIN `OA_USER` U ON UD.USER_ID = U.USER_ID
-										LEFT JOIN `OA_DEPT` D1 ON D.PARENT_ID = D1.DEPT_ID
-WHERE (U.`STATUS` = 1 OR U.USER_ID IS NULL)
-  AND D.ACTIVE = 1
-	AND D.ORG_ID = #{orgId}
-	AND (D1.ACTIVE = 1 OR D1.DEPT_ID IS NULL)
+          FROM  `OA_DEPT` D LEFT JOIN `OA_USER_DEPT` UD ON D.DEPT_ID = UD.DEPT_ID
+                                                LEFT JOIN `OA_USER` U ON UD.USER_ID = U.USER_ID
+                                                LEFT JOIN `OA_DEPT` D1 ON D.PARENT_ID = D1.DEPT_ID
+        WHERE (U.`STATUS` = 1 OR U.USER_ID IS NULL)
+          AND D.ACTIVE = 1
+            AND D.ORG_ID = #{orgId}
+            AND (D1.ACTIVE = 1 OR D1.DEPT_ID IS NULL)
   </select>
+  <!--更新部门信息-->
+  <update id="updateDept" parameterType="com.hemooffice.suopu.dto.Dept">
+    UPDATE `OA_DEPT`
+       SET PARENT_ID = #{parentId}, DEPT_NAME = #{deptName}, DEPT_DESC = #{deptDesc}, ORDER_NUM = #{orderNum], MODIFY_TIME= now(), ACTIVE = #{active}
+     WHERE DEPT_ID = #{deptId}
+  </update>
 </mapper>

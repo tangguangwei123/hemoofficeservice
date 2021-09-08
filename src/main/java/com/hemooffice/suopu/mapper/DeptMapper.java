@@ -63,4 +63,11 @@ public interface DeptMapper {
      * @return
      */
     List<Dept> findDeptListAndUserList(@Param("orgId") Integer orgId);
+
+    /**
+     * 更新部门信息
+     * @param dept
+     * @return
+     */
+    int updateDept(Dept dept);
 }
