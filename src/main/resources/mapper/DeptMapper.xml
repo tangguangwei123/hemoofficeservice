@@ -139,7 +139,7 @@
   <!--更新部门信息-->
   <update id="updateDept" parameterType="com.hemooffice.suopu.dto.Dept">
     UPDATE `OA_DEPT`
-       SET PARENT_ID = #{parentId}, DEPT_NAME = #{deptName}, DEPT_DESC = #{deptDesc}, ORDER_NUM = #{orderNum], MODIFY_TIME= now(), ACTIVE = #{active}
+       SET PARENT_ID = #{parentId}, ORG_ID= #{orgId}, DEPT_NAME= #{deptName}, DEPT_DESC= #{deptDesc}, ORDER_NUM= #{orderNum}, MODIFY_TIME= now(), ACTIVE= #{active}
      WHERE DEPT_ID = #{deptId}
   </update>
 </mapper>

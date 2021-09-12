@@ -12,4 +12,11 @@ public interface RoleService {
      * @return
      */
     List<Role> findRoleListByUserId(Integer userId);
+
+    /**
+     * 加载当前机构所有角色
+     * @param orgId
+     * @return
+     */
+    List<Role> findRoleList(Integer orgId);
 }
