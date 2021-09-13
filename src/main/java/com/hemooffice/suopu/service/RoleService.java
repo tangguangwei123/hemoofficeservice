@@ -1,6 +1,7 @@
 package com.hemooffice.suopu.service;
 
 import com.hemooffice.suopu.dto.Role;
+import com.hemooffice.suopu.exception.CusAuthException;
 
 import java.util.List;
 
@@ -19,4 +20,17 @@ public interface RoleService {
      * @return
      */
     List<Role> findRoleList(Integer orgId);
+
+    /**
+     * 新增机构角色
+     * @param role
+     * @return
+     */
+    int addOrgRole(Role role);
+
+    /**
+     * 删除角色
+     * @return
+     */
+    int deleteRole(Integer orgId, Integer roleId) throws CusAuthException;
 }

@@ -25,7 +25,7 @@ public class Permission {
 
     private Date modifyTime;
 
-    private Integer acitve;
+    private Integer active;
 
     public Integer getId() {
         return id;
@@ -116,10 +116,10 @@ public class Permission {
     }
 
     public Integer getAcitve() {
-        return acitve;
+        return active;
     }
 
-    public void setAcitve(Integer acitve) {
-        this.acitve = acitve;
+    public void setAcitve(Integer active) {
+        this.active = active;
     }
 }

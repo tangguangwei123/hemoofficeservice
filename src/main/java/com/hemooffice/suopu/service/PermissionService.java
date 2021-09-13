@@ -12,4 +12,11 @@ public interface PermissionService {
      * @return
      */
     List<Permission> findPermissionListByRoleId(Integer roleId);
+
+    /**
+     *加载当前机构所有资源权限
+     * @param orgId
+     * @return
+     */
+    List<Permission> findPermissionListByOrgId(Integer orgId);
 }

@@ -1,26 +1,15 @@
 package com.hemooffice.suopu.mapper;
 
 import com.hemooffice.suopu.dto.Permission;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface PermissionMapper {
     /**
-     * 根据资源ID加载资源
-     * @param id
+     * 加载当前机构所有资源权限
+     * @param orgId
      * @return
      */
-    Permission selectByPrimaryKey(Integer id);
-
-    /**
-     * 加载所有资源
-     * @return
-     */
-    List<Permission> selectAll();
-
-    /**
-     * 根据资源ID更新资源
-     * @param record
-     * @return
-     */
-    int updateByPrimaryKey(Permission record);
+    List<Permission> findPermissionListByOrgId(@Param("orgId") Integer orgId);
 }

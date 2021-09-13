@@ -1,6 +1,7 @@
 package com.hemooffice.suopu.globalexception;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.exception.CusSystemException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
@@ -87,6 +88,10 @@ public class GlobalExceptionHandler {
             jsonObject.put("message", e.getMessage());
             e.printStackTrace();
         } else if (e instanceof CusSystemException) {
+            jsonObject.put("status", 505);
+            jsonObject.put("message", e.getMessage());
+            e.printStackTrace();
+        } else if (e instanceof CusAuthException) {
             jsonObject.put("status", 505);
             jsonObject.put("message", e.getMessage());
             e.printStackTrace();

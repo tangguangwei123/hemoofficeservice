@@ -4,6 +4,7 @@ import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
 import com.hemooffice.suopu.dto.DeptUserRelationship;
 import com.hemooffice.suopu.dto.User;
+import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.mapper.DeptMapper;
 import com.hemooffice.suopu.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,6 @@ public class DeptServiceImpl implements DeptService {
     @Override
     @Transactional(rollbackFor={Exception.class})
     public int setDeptUser(DeptParam deptParam) {
-        System.out.print("提交的数据:"+deptParam.toString());
         //如果deptId == null则新增部门 ，如果不为null 则编辑部门
         int result = 0;
         if(deptParam.getDeptId() == null){
@@ -70,16 +70,23 @@ public class DeptServiceImpl implements DeptService {
 
     /**
      * 删除部门
+     * @param orgId
      * @param deptId
      * @return
      */
     @Override
     @Transactional(rollbackFor={Exception.class})
-    public int deleteDept(Integer deptId) {
+    public int deleteDept(Integer orgId, Integer deptId) throws CusAuthException {
+        //验证当前登录机构是否有此部门
+        Dept dept = deptMapper.findOrgDeptByDeptIdOrgId(orgId,deptId);
+
+        if(dept == null){
+            throw new CusAuthException("当前机构无此部门");
+        }
         //先删除部门下面用户
         deptMapper.deleteDeptUser(deptId);
         //然后删除部门
-        int result = deptMapper.deleteDept(deptId);
+        int result = deptMapper.deleteDept(orgId,deptId);
 
         return result;
     }

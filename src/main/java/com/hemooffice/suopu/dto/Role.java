@@ -1,10 +1,14 @@
 package com.hemooffice.suopu.dto;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 
 public class Role {
     private Integer roleId;
-
+    @Length(max = 30,message = "角色名称长度必须在1-30之间")
+    @NotBlank(message = "角色名称不能为空")
     private String roleName;
 
     private Integer orgId;
@@ -14,6 +18,10 @@ public class Role {
     private Date createTime;
 
     private Date modifyTime;
+    @Length(max = 80,message = "角色描述长度必须在80字符以内")
+    private String roleDesc;
+
+    private Integer active;
 
     public Integer getRoleId() {
         return roleId;
@@ -61,5 +69,35 @@ public class Role {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getRoleDesc() {
+        return roleDesc;
+    }
+
+    public void setRoleDesc(String roleDesc) {
+        this.roleDesc = roleDesc;
+    }
+
+    public Integer getActive() {
+        return active;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
+                ", orgId=" + orgId +
+                ", roleIdentifi='" + roleIdentifi + '\'' +
+                ", createTime=" + createTime +
+                ", modifyTime=" + modifyTime +
+                ", roleDesc='" + roleDesc + '\'' +
+                ", active=" + active +
+                '}';
     }
 }

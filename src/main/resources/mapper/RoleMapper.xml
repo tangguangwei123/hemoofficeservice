@@ -10,7 +10,24 @@
     <result column="MODIFY_TIME" property="modifyTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <!--根据机构ID查询当前角色-->
-  <select id="findRoleList" parameterType="java.lang.Integer" >
+  <select id="findRoleList" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Role" >
       SELECT * FROM `OA_ROLE` WHERE ORG_ID = #{orgId} AND ACTIVE = 1
+  </select>
+  <!--新增机构角色-->
+  <insert id="addOrgRole" parameterType="com.hemooffice.suopu.dto.Role" useGeneratedKeys="true" keyProperty="roleId" keyColumn="ROLE_ID">
+      INSERT INTO `OA_ROLE` (ROLE_NAME,ORG_ID,CREATE_TIME,ROLE_DESC,ACTIVE)
+							VALUES (#{roleName},#{orgId},now(),#{roleDesc},#{active})
+  </insert>
+  <!--根据标识符查找角色-->
+  <select id="findRoleByRoleIdentifi" parameterType="java.lang.String" resultType="com.hemooffice.suopu.dto.Role">
+    select * from `oa_role` where active = 1 and role_identifi = #{idenrifi} AND ORG_ID =#{orgId}
+  </select>
+  <!--更新角色信息-->
+  <update id="updateRole" parameterType="com.hemooffice.suopu.dto.Role" >
+    UPDATE `OA_ROLE` SET ROLE_NAME = #{roleName}, ROLE_DESC = #{roleDesc}, MODIFY_TIME = now(), ACTIVE = #{active} WHERE ROLE_ID = #{roleId} AND ORG_ID = #{orgId}
+  </update>
+  <!--根据角色ID查找角色-->
+  <select id="findRoleByRoleId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Role">
+    SELECT * FROM `OA_ROLE` WHERE ROLE_ID =#{roleId} AND ACTIVE = 1 AND ORG_ID =#{orgId}
   </select>
 </mapper>

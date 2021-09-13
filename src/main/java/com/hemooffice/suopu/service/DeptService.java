@@ -3,6 +3,7 @@ package com.hemooffice.suopu.service;
 import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
 import com.hemooffice.suopu.dto.User;
+import com.hemooffice.suopu.exception.CusAuthException;
 
 import java.util.List;
 
@@ -23,10 +24,11 @@ public interface DeptService {
 
     /**
      * 删除部门
+     * @param orgId
      * @param deptId
      * @return
      */
-    public int deleteDept(Integer deptId);
+    public int deleteDept(Integer orgId, Integer deptId) throws CusAuthException;
 
     /**
      * 加载当前机构所有部门和部门下用户

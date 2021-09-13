@@ -15,30 +15,8 @@
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
     <result column="acitve" property="acitve" jdbcType="INTEGER" />
   </resultMap>
-  <update id="updateByPrimaryKey" parameterType="com.hemooffice.suopu.dto.Permission" >
-    update oa_resource
-    set parent_id = #{parentId,jdbcType=INTEGER},
-      name = #{name,jdbcType=VARCHAR},
-      org_id = #{orgId,jdbcType=INTEGER},
-      type = #{type,jdbcType=VARCHAR},
-      url = #{url,jdbcType=VARCHAR},
-      permission = #{permission,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=INTEGER},
-      icon = #{icon,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-      acitve = #{acitve,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, parent_id, name, org_id, type, url, permission, order_num, icon, create_time, 
-    modify_time, acitve
-    from oa_resource
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, parent_id, name, org_id, type, url, permission, order_num, icon, create_time, 
-    modify_time, acitve
-    from oa_resource
+  <!--加载当前机构所有资源权限-->
+  <select id="findPermissionListByOrgId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Permission">
+      SELECT *  FROM `OA_RESOURCE` WHERE ACTIVE = 1 AND ORG_ID = #{orgId}
   </select>
 </mapper>

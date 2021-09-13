@@ -4,6 +4,7 @@ import com.hemooffice.suopu.dto.Dept;
 import com.hemooffice.suopu.dto.DeptParam;
 import com.hemooffice.suopu.dto.Msg;
 import com.hemooffice.suopu.dto.Organization;
+import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.service.DeptService;
 import com.hemooffice.suopu.utils.SessionUtil;
 import org.slf4j.Logger;
@@ -65,7 +66,18 @@ public class DeptController {
      */
     @GetMapping("/dept-delete")
     public Msg deleteDept(@RequestParam("deptId") Integer deptId){
-        return Msg.success(deptService.deleteDept(deptId));
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        int result = 0;
+        try {
+            result = deptService.deleteDept(organization.getOrgId(),deptId);
+        } catch (CusAuthException e) {
+            e.printStackTrace();
+            return Msg.fail(505,e.getMessage(),null);
+        }
+        return Msg.success(result);
     }
 
     /**

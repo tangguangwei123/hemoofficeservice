@@ -38,10 +38,10 @@ public interface DeptMapper {
 
     /**
      * 删除部门
-     * @param deptId
+     * @param
      * @return
      */
-    int deleteDept(@Param("deptId") Integer deptId);
+    int deleteDept(@Param("orgId") Integer orgId, @Param("deptId") Integer deptId);
 
     /**
      * 查询指定部门下面用户
@@ -70,4 +70,10 @@ public interface DeptMapper {
      * @return
      */
     int updateDept(Dept dept);
+
+    /**
+     * 根据orgId和deptId查询部门信息
+     * @return
+     */
+    Dept findOrgDeptByDeptIdOrgId(@Param("orgId") Integer orgId, @Param("deptId") Integer deptId);
 }

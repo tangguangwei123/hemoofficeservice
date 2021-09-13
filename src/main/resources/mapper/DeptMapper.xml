@@ -20,6 +20,7 @@
 	  WHERE D.ACTIVE = 1
 		  AND D1.ACTIVE =1
 		  OR  (D.ACTIVE = 1 AND D1.DEPT_ID IS NULL)
+		  AND D.ORG_ID = #{orgId}
   </select>
 
     <!--新增部门-->
@@ -43,7 +44,7 @@
   </delete>
     <!--删除部门-->
     <delete id="deleteDept" parameterType="java.lang.Integer">
-     UPDATE `OA_DEPT` SET ACTIVE = 0 WHERE DEPT_ID = #{deptId}
+     UPDATE `OA_DEPT` SET ACTIVE = 0 WHERE (DEPT_ID = #{deptId} OR PARENT_ID = #{deptId})  AND ORG_ID = #{orgId}
   </delete>
     <!--查询指定部门下面用户-->
     <select id="findUsersByDeptId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.User">
@@ -139,7 +140,12 @@
   <!--更新部门信息-->
   <update id="updateDept" parameterType="com.hemooffice.suopu.dto.Dept">
     UPDATE `OA_DEPT`
-       SET PARENT_ID = #{parentId}, ORG_ID= #{orgId}, DEPT_NAME= #{deptName}, DEPT_DESC= #{deptDesc}, ORDER_NUM= #{orderNum}, MODIFY_TIME= now(), ACTIVE= #{active}
+       SET PARENT_ID = #{parentId}, ORG_ID= #{orgId}, DEPT_NAME= #{deptName}, DEPT_DESC= #{deptDesc}, ORDER_NUM= #{orderNum}, MODIFY_TIME= now(),ACTIVE = #{active}
      WHERE DEPT_ID = #{deptId}
+       AND ORG_ID = #{orgId}
   </update>
+    <!--根据orgId和deptId查询部门信息-->
+    <select id="findOrgDeptByDeptIdOrgId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Dept" >
+      SELECT * FROM `OA_DEPT` WHERE DEPT_ID = #{deptId} AND ORG_ID =#{orgId} AND ACTIVE = 1
+    </select>
 </mapper>
