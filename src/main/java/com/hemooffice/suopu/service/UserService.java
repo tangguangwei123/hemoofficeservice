@@ -33,4 +33,12 @@ public interface UserService {
      * @return
      */
     public int addUser(User user) throws CusSystemException;
+
+    /**
+     * 根据角色Id加载用户列表
+     * @param orgId
+     * @param roleId
+     * @return
+     */
+    List<User> findUserListByRoleId(Integer orgId, Integer roleId);
 }

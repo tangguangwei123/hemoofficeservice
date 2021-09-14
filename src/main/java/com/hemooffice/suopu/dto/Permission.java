@@ -1,6 +1,7 @@
 package com.hemooffice.suopu.dto;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Permission {
     private Integer id;
@@ -121,5 +122,37 @@ public class Permission {
 
     public void setAcitve(Integer active) {
         this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Permission that = (Permission) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
+                ", orgId=" + orgId +
+                ", type='" + type + '\'' +
+                ", url='" + url + '\'' +
+                ", permission='" + permission + '\'' +
+                ", orderNum=" + orderNum +
+                ", icon='" + icon + '\'' +
+                ", createTime=" + createTime +
+                ", modifyTime=" + modifyTime +
+                ", active=" + active +
+                '}';
     }
 }

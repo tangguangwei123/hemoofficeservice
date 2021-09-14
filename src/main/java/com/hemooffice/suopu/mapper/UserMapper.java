@@ -26,4 +26,12 @@ public interface UserMapper {
      * @return
      */
     int addUser(User user);
+
+    /**
+     * 根据角色Id加载用户列表
+     * @param orgId
+     * @param roleId
+     * @return
+     */
+    List<User> findUserListByRoleId(@Param("orgId") Integer orgId, @Param("roleId") Integer roleId);
 }

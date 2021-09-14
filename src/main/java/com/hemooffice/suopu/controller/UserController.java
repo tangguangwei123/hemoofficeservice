@@ -25,6 +25,7 @@ import sun.nio.cs.ext.MS874;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -235,5 +236,20 @@ public class UserController {
     @GetMapping("/getuser-useraccount")
     public Msg findUserByUerAccount(@NotBlank(message = "用户账户不能为空!") String userAccount){
         return Msg.success(userService.findUserByUserAccount(userAccount));
+    }
+
+    /**
+     * 根据角色Id加载用户列表
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/userlist-role")
+    public Msg findUserListByRoleId(@NotNull(message = "角色ID不能为空")  @RequestParam("roleId") Integer roleId){
+        //得到当前登录机构信息放入参数
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(userService.findUserListByRoleId(organization.getOrgId(),roleId));
     }
 }

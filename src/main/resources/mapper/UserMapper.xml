@@ -50,4 +50,8 @@
 		INSERT INTO `OA_USER`(USER_NAME,SEX,USER_ACCOUNT,LOGIN_ALIAS,EMP_NBM,`PASSWORD`, EMAIL, MOBILE,TELL,HIDDEN_TELL,ORDER_NUM,ORG_ID,CREATE_TIME)
               VALUES(#{userName},#{sex},#{userAccount},#{loginAlias},#{empNbm},#{password},#{email},#{mobile},#{tell},#{hiddenTell},#{orderNum},#{orgId},now())
 	</insert>
+    <!--根据角色Id加载用户列表-->
+    <select id="findUserListByRoleId" resultType="com.hemooffice.suopu.dto.User">
+      SELECT U.* FROM `OA_USER` U, `OA_ROLE_USER` RU WHERE U.USER_ID = RU.USER_ID AND U.`STATUS` = 1 AND U.ORG_ID = #{orgId} AND RU.ROLE_ID = #{roleId}
+    </select>
 </mapper>

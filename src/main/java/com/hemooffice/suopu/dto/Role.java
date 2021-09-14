@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.util.Date;
+import java.util.List;
 
 public class Role {
     private Integer roleId;
@@ -22,6 +23,10 @@ public class Role {
     private String roleDesc;
 
     private Integer active;
+
+    private List<Integer> permissionList;
+
+    private List<Integer> userList;
 
     public Integer getRoleId() {
         return roleId;
@@ -87,6 +92,22 @@ public class Role {
         this.active = active;
     }
 
+    public List<Integer> getPermissionList() {
+        return permissionList;
+    }
+
+    public List<Integer> getUserList() {
+        return userList;
+    }
+
+    public void setPermissionList(List<Integer> permissionList) {
+        this.permissionList = permissionList;
+    }
+
+    public void setUserList(List<Integer> userList) {
+        this.userList = userList;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
@@ -98,6 +119,8 @@ public class Role {
                 ", modifyTime=" + modifyTime +
                 ", roleDesc='" + roleDesc + '\'' +
                 ", active=" + active +
+                ", permissionList=" + permissionList +
+                ", userList=" + userList +
                 '}';
     }
 }

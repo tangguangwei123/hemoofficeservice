@@ -12,4 +12,11 @@ public interface PermissionMapper {
      * @return
      */
     List<Permission> findPermissionListByOrgId(@Param("orgId") Integer orgId);
+
+    /**
+     *根据角色和机构加载角色Id
+     * @param roleId
+     * @return
+     */
+    List<Permission> findPermissionListByRoleId(@Param("orgId") Integer integer, @Param("roleId") Integer roleId);
 }

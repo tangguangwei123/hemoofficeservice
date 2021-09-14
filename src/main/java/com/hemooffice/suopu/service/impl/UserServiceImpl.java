@@ -117,4 +117,15 @@ public class UserServiceImpl implements UserService {
         }
         return userMapper.addUser(user);
     }
+
+    /**
+     * 根据角色Id加载用户列表
+     * @param orgId
+     * @param roleId
+     * @return
+     */
+    @Override
+    public List<User> findUserListByRoleId(Integer orgId, Integer roleId) {
+        return userMapper.findUserListByRoleId(orgId,roleId);
+    }
 }

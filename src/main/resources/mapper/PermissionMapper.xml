@@ -19,4 +19,8 @@
   <select id="findPermissionListByOrgId" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.Permission">
       SELECT *  FROM `OA_RESOURCE` WHERE ACTIVE = 1 AND ORG_ID = #{orgId}
   </select>
+  <!--根据角色和机构加载角色Id-->
+  <select id="findPermissionListByRoleId" resultType="com.hemooffice.suopu.dto.Permission" >
+    SELECT R.* FROM `OA_RESOURCE` R,`OA_ROLE_RESOURCE` RR WHERE R.ID = RR.RESOURCE_ID AND R.ACTIVE = 1 AND R.ORG_ID = #{orgId} AND RR.ROLE_ID = #{roleId}
+  </select>
 </mapper>
