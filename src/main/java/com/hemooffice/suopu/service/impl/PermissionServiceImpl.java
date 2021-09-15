@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PermissionServiceImpl implements PermissionService {
@@ -59,12 +60,20 @@ public class PermissionServiceImpl implements PermissionService {
         if(roleList.size() == 0){
             throw new CusAuthException("该用户还未授权");
         }
-        List<Permission> menuList = new ArrayList<>();
+        List<Permission> permissionList = new ArrayList<>();
         for (int i = 0; i< roleList.size(); i++){
-            menuList.addAll(permissionMapper.findPermissionListByRoleId(orgId,roleList.get(i).getRoleId()));
+            permissionList.addAll(permissionMapper.findPermissionListByRoleId(orgId,roleList.get(i).getRoleId()));
         }
         //去重
+        permissionList  = permissionList.stream().distinct().collect(Collectors.toList());
+        //只返回菜单类型
+        List<Permission> menuList = new ArrayList<>();
 
-        return null;
+        for (int k = 0; k < permissionList.size(); k++){
+            if (permissionList.get(k).getType().equals("menu")){
+                menuList.add(permissionList.get(k));
+            };
+        }
+        return menuList;
     }
 }

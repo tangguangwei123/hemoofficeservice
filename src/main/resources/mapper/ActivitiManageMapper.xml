@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hemooffice.suopu.mapper.ActivitiManageMapper">
+    <!--新增审批类别-->
     <insert id="addActivitiCategory" parameterType="com.hemooffice.suopu.dto.OaActCategory" useGeneratedKeys="true" keyProperty="id">
-        insert into oa_act_category values(null,#{categoryName},#{orderNum},#{irrevocable},NOW(),NOW())
+    INSERT INTO `OA_ACT_CATEGORY` (ORG_ID,CATEGORY_NAME,ORDER_NUM,IRREVOCABLE,CREATE_DATE,ACTIVE)
+                                                VALUES (#{orgId}, #{categoryName}, #{orderNum}, #{irrevocable}, now(),1)
     </insert>
+    <!--加载当前机构审批类别-->
+    <select id="findOrgActCategory" resultType="com.hemooffice.suopu.dto.OaActCategory" >
+      SELECT *
+      FROM `OA_ACT_CATEGORY`
+     WHERE ACTIVE = 1
+       AND ORG_ID = #{orgId}
+    </select>
+    <!--删除审批流程类别-->
+    <update id="deleteActCategory" >
+        UPDATE `OA_ACT_CATEGORY` SET ACTIVE = 0, LAST_DATE = now() WHERE ID = #{id} AND ORG_ID = #{orgId}
+    </update>
+
 </mapper>

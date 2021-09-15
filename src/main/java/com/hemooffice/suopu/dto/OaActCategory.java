@@ -1,11 +1,14 @@
 package com.hemooffice.suopu.dto;
 
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class OaActCategory {
 
     private Integer id;
+
+    private Integer orgId;
     @NotNull(message = "审批类别名称不能为空")
     private String categoryName;
     @NotNull(message = "审批排序不能为空")
@@ -14,9 +17,11 @@ public class OaActCategory {
 
     private Integer irrevocable;
 
-    private Date createDate;
+    private String createDate;
 
-    private Date lastDate;
+    private String lastDate;
+
+    private Integer active;
 
     public Integer getId() {
         return id;
@@ -24,6 +29,14 @@ public class OaActCategory {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
     }
 
     public String getCategoryName() {
@@ -50,19 +63,38 @@ public class OaActCategory {
         this.irrevocable = irrevocable;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getCreateDate() { return createDate; }
+
+    public void setCreateDate(Date createDate)
+    {
+        if(createDate == null){
+            this.createDate = null;
+            return;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(createDate);
+        this.createDate = dateString;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getLastDate() {
+    public String getLastDate() {
         return lastDate;
     }
 
     public void setLastDate(Date lastDate) {
-        this.lastDate = lastDate;
+        if(lastDate == null){
+            this.lastDate = null;
+            return;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(lastDate);
+        this.lastDate = dateString;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getActive() {
+        return active;
     }
 }

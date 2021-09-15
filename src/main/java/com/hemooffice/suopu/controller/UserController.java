@@ -3,10 +3,13 @@ package com.hemooffice.suopu.controller;
 import com.hemooffice.suopu.constant.GlobalParam;
 import com.hemooffice.suopu.dto.Msg;
 import com.hemooffice.suopu.dto.Organization;
+import com.hemooffice.suopu.dto.Permission;
 import com.hemooffice.suopu.dto.User;
+import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.exception.CusSystemException;
 import com.hemooffice.suopu.exception.UserAuthException;
 import com.hemooffice.suopu.service.OrganizationService;
+import com.hemooffice.suopu.service.PermissionService;
 import com.hemooffice.suopu.service.UserService;
 import com.hemooffice.suopu.utils.FileUtil;
 import com.hemooffice.suopu.utils.IOUtils;
@@ -46,6 +49,8 @@ public class UserController {
     private OrganizationService organizationService;
     @Autowired
     private SessionUtil sessionUtil;
+    @Autowired
+    private PermissionService permissionService;
     //redis
     @Resource(name = "redisTemplate")
     private RedisTemplate<String,Object> redisTemplate;
@@ -137,6 +142,7 @@ public class UserController {
         String token = null;
         User dUser = null;
         Organization organization = null;
+        List<Permission> menuList = new ArrayList<>();
         try {
              token = userService.login(user);
              //根据userAccount获取数据库用户
@@ -146,6 +152,15 @@ public class UserController {
              }
              //根据登录当前登录用户加载机构信息
             organization = organizationService.findOrganizationByUserId(dUser.getUserId());
+            //获取菜单信息返回前端
+            menuList = new ArrayList<>();
+
+            try {
+                menuList =  permissionService.findUserMenuList(organization.getOrgId(),dUser.getUserId());
+            } catch (CusAuthException e) {
+                e.printStackTrace();
+                return Msg.send(505,e.getMessage());
+            }
             //使用token做主键 将user信息存入redis
             redisTemplate.opsForValue().set(token+ ":user",dUser,GlobalParam.CACHETIME,TimeUnit.SECONDS);
             //存入机构信息到redis
@@ -162,6 +177,7 @@ public class UserController {
         resMap.put("token",token);
         resMap.put("user",dUser);
         resMap.put("organization",organization);
+        resMap.put("menuList",menuList);
         return Msg.success(resMap);
     }
 
@@ -251,5 +267,33 @@ public class UserController {
             return Msg.send(401,"redis中机构信息为空,请重新登陆");
         }
         return Msg.success(userService.findUserListByRoleId(organization.getOrgId(),roleId));
+    }
+
+    /**
+     * 加载当前登录用户菜单
+     * @return
+     */
+    @GetMapping("/user-menulist")
+    public Msg findUserMenuList(){
+        //得到当前登录机构信息放入参数
+        User user = (User)sessionUtil.getSessionObj("user");
+        if(user == null){
+            return Msg.send(401,"redis中登录用户信息为空,请重新登陆");
+        }
+        //得到当前登录机构信息放入参数
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+
+        List<Permission> menuList = new ArrayList<>();
+
+        try {
+            menuList =  permissionService.findUserMenuList(organization.getOrgId(),user.getUserId());
+        } catch (CusAuthException e) {
+            e.printStackTrace();
+            return Msg.send(505,e.getMessage());
+        }
+        return Msg.success(menuList);
     }
 }

@@ -39,20 +39,4 @@ public class PermissionController {
 
         return Msg.success(permissionList);
     };
-
-    /**
-     *根据角色和机构加载角色Id
-     * @return
-     */
-    @GetMapping("/role-permissionlist")
-    public Msg findPermissionListByRoleId(@NotNull(message = "角色ID不能为空") @RequestParam("roleId") Integer roleId){
-        //得到当前登录机构信息放入参数
-        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
-        if(organization == null){
-            return Msg.send(401,"redis中机构信息为空,请重新登陆");
-        }
-        List<Permission> permissionList = permissionService.findPermissionListByRoleId(organization.getOrgId(),roleId);
-
-        return Msg.success(permissionList);
-    }
 }

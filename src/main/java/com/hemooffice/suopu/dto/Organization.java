@@ -54,6 +54,10 @@ public class Organization implements Serializable {
     }
 
     public void setCreateTime(Date createTime) {
+        if(createTime == null){
+            this.createTime = null;
+            return;
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(createTime);
         this.createTime = dateString;

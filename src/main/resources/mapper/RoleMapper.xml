@@ -54,6 +54,15 @@
   </insert>
   <!--根据机构id用户id查找角色列表-->
   <select id="findRoleByUserId" resultType="com.hemooffice.suopu.dto.Role" >
-      SELECT U.* FROM `OA_USER` U, `OA_ROLE_USER` OU WHERE U.USER_ID = OU.USER_ID AND U.`STATUS` = 1 AND U.ORG_ID = #{orgId} AND U.USER_ID = #{userId}
+      SELECT R.*
+        FROM `OA_ROLE_USER` RU,
+             `OA_ROLE` R,
+             `OA_USER` U
+       WHERE RU.ROLE_ID = R.ROLE_ID
+         AND RU.USER_ID = U.USER_ID
+         AND R.ACTIVE = 1
+         AND U.`STATUS` = 1
+         AND U.ORG_ID = #{orgId}
+         AND U.USER_ID = #{userId}
   </select>
 </mapper>

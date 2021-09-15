@@ -20,27 +20,6 @@ class HemoOfficeServiceApplicationTests {
     private RoleMapper roleMapper;
     @Test
     void contextLoads() throws UnsupportedEncodingException {
-        Set<Permission> set = new HashSet<>();
-
-        Permission p1 = new Permission();
-        Permission p2 = new Permission();
-        Permission p3 = new Permission();
-        Permission p4 = new Permission();
-
-        p1.setId(1);
-        p2.setId(1);
-        p3.setId(1);
-        p4.setId(1);
-
-        set.add(p1);
-        set.add(p2);
-        set.add(p3);
-        set.add(p4);
-
-        Iterator<Permission> it = set.iterator();
-        while (it.hasNext()) {
-            Permission permission = it.next();
-            System.out.println(permission.toString());
-        }
+        System.out.print(roleMapper.findRoleByUserId(1,1));
     }
 }
