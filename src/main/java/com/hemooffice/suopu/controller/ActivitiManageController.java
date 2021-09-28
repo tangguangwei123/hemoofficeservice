@@ -1,5 +1,6 @@
 package com.hemooffice.suopu.controller;
 
+import com.hemooffice.suopu.dto.ActivitiDefParam;
 import com.hemooffice.suopu.dto.Msg;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.Organization;
@@ -61,5 +62,18 @@ public class ActivitiManageController {
             return Msg.send(401,"redis中机构信息为空,请重新登陆");
         }
         return Msg.success(activitiManageService.deleteActCategory(organization.getOrgId(),id));
+    }
+
+    /**
+     *新增流程定义
+     * @return
+     */
+    @PostMapping("/activitidef-add")
+    public Msg addActivitiDef(@Validated @RequestBody ActivitiDefParam activitiDefParam){
+
+        logger.info("流程定义数据：");
+        logger.info(activitiDefParam.toString());
+
+        return Msg.success("ok");
     }
 }
