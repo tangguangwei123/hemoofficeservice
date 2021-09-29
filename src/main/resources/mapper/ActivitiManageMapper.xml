@@ -17,5 +17,23 @@
     <update id="deleteActCategory" >
         UPDATE `OA_ACT_CATEGORY` SET ACTIVE = 0, LAST_DATE = now() WHERE ID = #{id} AND ORG_ID = #{orgId}
     </update>
-
+    <!--插入流程定义-->
+    <insert id="addActDef" parameterType="com.hemooffice.suopu.dto.OaActDef" useGeneratedKeys="true" keyProperty="id" >
+        INSERT INTO `OA_ACT_DEF` (`NAME`,CATEGORY_ID,FORM_ITEM,FLOW_CHART,ORG_ID,CREATE_EMP,CREATE_DATE,ACTIVE)
+									VALUES (#{name}, #{categoryId}, #{formItem}, #{flowChart}, #{orgId}, #{createEmp}, now(),1);
+    </insert>
+    <!--获取指定机构表单列表-->
+    <select id="findActDefFormItem" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.OaActDef">
+        SELECT  ID,
+				`NAME`,
+				CATEGORY_ID,
+				FORM_ITEM,
+				ORG_ID,
+				CREATE_EMP,
+				ACTIVE,
+				DELETE_EMP,
+				DELETE_DATE
+	      FROM `OA_ACT_DEF`
+         WHERE ACTIVE = 1
+    </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.hemooffice.suopu.dto;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -20,9 +22,9 @@ public class ActivitiDefParam {
     private Integer category;
     //审批流表单对象
     @Size(min=1,message = "请设计流程表单")
-    private Object[] formItem;
+    private JSONArray formItem;
     //流程图定义
-    private Object flowChart;
+    private JSONObject flowChart;
 
     public void setName(String name) {
         this.name = name;
@@ -32,11 +34,11 @@ public class ActivitiDefParam {
         this.category = category;
     }
 
-    public void setFormItem(Object[] formItem) {
+    public void setFormItem(JSONArray formItem) {
         this.formItem = formItem;
     }
 
-    public void setFlowChart(Object flowChart) {
+    public void setFlowChart(JSONObject flowChart) {
         this.flowChart = flowChart;
     }
 
@@ -48,11 +50,11 @@ public class ActivitiDefParam {
         return category;
     }
 
-    public Object[] getFormItem() {
+    public JSONArray getFormItem() {
         return formItem;
     }
 
-    public Object getFlowChart() {
+    public JSONObject getFlowChart() {
         return flowChart;
     }
 
@@ -61,7 +63,7 @@ public class ActivitiDefParam {
         return "ActivitiDefParam{" +
                 "name='" + name + '\'' +
                 ", category=" + category +
-                ", formItem=" + Arrays.toString(formItem) +
+                ", formItem=" + formItem +
                 ", flowChart=" + flowChart +
                 '}';
     }

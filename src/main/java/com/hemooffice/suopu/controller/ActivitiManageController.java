@@ -1,9 +1,6 @@
 package com.hemooffice.suopu.controller;
 
-import com.hemooffice.suopu.dto.ActivitiDefParam;
-import com.hemooffice.suopu.dto.Msg;
-import com.hemooffice.suopu.dto.OaActCategory;
-import com.hemooffice.suopu.dto.Organization;
+import com.hemooffice.suopu.dto.*;
 import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.utils.SessionUtil;
 import org.slf4j.Logger;
@@ -71,9 +68,35 @@ public class ActivitiManageController {
     @PostMapping("/activitidef-add")
     public Msg addActivitiDef(@Validated @RequestBody ActivitiDefParam activitiDefParam){
 
-        logger.info("流程定义数据：");
-        logger.info(activitiDefParam.toString());
-
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        //获取当前登陆用户
+        User lUser = (User)sessionUtil.getSessionObj("user");
+        if(lUser == null){
+            return Msg.send(401,"redis中用户信息为空,请重新登陆");
+        }
+        //封装数据
+        OaActDef oaActDef = new OaActDef();
+        oaActDef.setName(activitiDefParam.getName());
+        oaActDef.setCategoryId(activitiDefParam.getCategory());
+        oaActDef.setOrgId(organization.getOrgId());
+        oaActDef.setCreateEmp(lUser.getUserId());
+        oaActDef.setFormItem(activitiDefParam.getFormItem().toJSONString());
+        oaActDef.setFlowChart(activitiDefParam.getFlowChart().toJSONString());
+        activitiManageService.addActDef(oaActDef);
         return Msg.success("ok");
+    }
+
+    @GetMapping("/activitidef-formitemlist")
+    public Msg findActDefFormItem(){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(activitiManageService.findActDefFormItem(organization.getOrgId()));
     }
 }

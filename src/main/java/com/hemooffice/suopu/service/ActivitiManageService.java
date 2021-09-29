@@ -1,6 +1,7 @@
 package com.hemooffice.suopu.service;
 
 import com.hemooffice.suopu.dto.OaActCategory;
+import com.hemooffice.suopu.dto.OaActDef;
 
 import java.util.List;
 
@@ -26,4 +27,18 @@ public interface ActivitiManageService {
      * @return
      */
     int deleteActCategory(Integer orgId,Integer id);
+
+    /**
+     * 插入流程定义
+     * @param oaActDef
+     * @return
+     */
+    int addActDef(OaActDef oaActDef);
+
+    /**
+     * 获取指定机构表单列表
+     * @param orgId
+     * @return
+     */
+    List<OaActDef> findActDefFormItem(Integer orgId);
 }

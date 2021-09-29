@@ -13,9 +13,9 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/api")
-public class ActivityController {
+public class ActivitiController {
     //日志
-    private static final Logger logger = LoggerFactory.getLogger(ActivityController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiController.class);
 
     @Autowired
     private RuntimeService runtimeService;

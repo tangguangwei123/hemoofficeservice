@@ -1,10 +1,10 @@
 package com.hemooffice.suopu.mapper;
 
 import com.hemooffice.suopu.dto.OaActCategory;
+import com.hemooffice.suopu.dto.OaActDef;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * activiti相关管理
@@ -28,6 +28,20 @@ public interface ActivitiManageMapper {
      * @return
      */
     int deleteActCategory(@Param("orgId") Integer orgId, @Param("id") Integer id);
+
+    /**
+     * 插入流程定义
+     * @param
+     * @return
+     */
+    int addActDef(OaActDef oaActDef);
+
+    /**
+     * 获取指定机构表单列表
+     * @param orgId
+     * @return
+     */
+    List<OaActDef> findActDefFormItem(@Param("orgId") Integer orgId);
 }
 
 
