@@ -22,10 +22,6 @@ spring:
         lettuce:
           shutdown-timeout: 0
 
-
-activiti:
-  database-schema-update: true
-  history-level: full
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:

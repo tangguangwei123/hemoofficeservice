@@ -5,7 +5,7 @@ import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.mapper.ActivitiManageMapper;
 import com.hemooffice.suopu.service.ActivitiManageService;
-import com.hemooffice.suopu.service.ActivitiService;
+import com.hemooffice.suopu.service.CamundaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ import java.util.List;
 @Service
 public class ActivitiManageServiceImpl implements ActivitiManageService {
     //日志
-    private static final Logger logger = LoggerFactory.getLogger(ActivitiServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiManageServiceImpl.class);
     @Autowired
     private ActivitiManageMapper activitiManageMapper;
     @Autowired
-    private ActivitiService activitiService;
+    private CamundaService camundaService;
     /**
      * 新增审批类别
      * @param oaActCategory
@@ -64,7 +64,7 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     public int addActDef(OaActDef oaActDef) {
         //部署流程
         JSONObject jsonObject = JSONObject.parseObject(oaActDef.getFlowChart());
-        activitiService.deploy(jsonObject.get("xml").toString());
+        camundaService.deploy(jsonObject.get("xml").toString());
         return activitiManageMapper.addActDef(oaActDef);
     }
 
