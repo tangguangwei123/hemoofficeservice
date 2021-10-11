@@ -22,7 +22,7 @@ public class ActivitiDefParam {
     private Integer category;
     //审批流表单对象
     @Size(min=1,message = "请设计流程表单")
-    private JSONArray formItem;
+    private JSONObject formItem;
     //流程图定义
     private JSONObject flowChart;
 
@@ -34,7 +34,7 @@ public class ActivitiDefParam {
         this.category = category;
     }
 
-    public void setFormItem(JSONArray formItem) {
+    public void setFormItem(JSONObject formItem) {
         this.formItem = formItem;
     }
 
@@ -50,7 +50,7 @@ public class ActivitiDefParam {
         return category;
     }
 
-    public JSONArray getFormItem() {
+    public JSONObject getFormItem() {
         return formItem;
     }
 

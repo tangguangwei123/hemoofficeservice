@@ -3,6 +3,7 @@ package com.hemooffice.suopu.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
+import com.hemooffice.suopu.dto.OaActDefRes;
 import com.hemooffice.suopu.mapper.ActivitiManageMapper;
 import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.service.CamundaService;
@@ -66,6 +67,16 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
         JSONObject jsonObject = JSONObject.parseObject(oaActDef.getFlowChart());
         camundaService.deploy(jsonObject.get("xml").toString());
         return activitiManageMapper.addActDef(oaActDef);
+    }
+
+    /**
+     * 获取指定机构流程列表
+     * @param orgId
+     * @return
+     */
+    @Override
+    public List<OaActDefRes> findActDefList(Integer orgId) {
+        return activitiManageMapper.findActDefList(orgId);
     }
 
     /**

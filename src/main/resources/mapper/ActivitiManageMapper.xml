@@ -22,6 +22,24 @@
         INSERT INTO `OA_ACT_DEF` (`NAME`,CATEGORY_ID,FORM_ITEM,FLOW_CHART,ORG_ID,CREATE_EMP,CREATE_DATE,ACTIVE)
 									VALUES (#{name}, #{categoryId}, #{formItem}, #{flowChart}, #{orgId}, #{createEmp}, now(),1);
     </insert>
+
+    <!--获取指定机构流程列表-->
+    <select id="findActDefList" resultType="com.hemooffice.suopu.dto.OaActDefRes" >
+            SELECT  F.ID,
+                    F.`NAME`,
+                    F.CATEGORY_ID,
+                    F.ORG_ID,
+                    F.CREATE_EMP,
+                    U.USER_NAME AS CREATE_EMP_NAME,
+                    F.ACTIVE,
+                    C.CATEGORY_NAME
+         FROM `OA_ACT_DEF` F,
+               `OA_USER` U,
+               `OA_ACT_CATEGORY` C
+      WHERE F.ORG_ID = #{orgId}
+          AND F.CATEGORY_ID = C.ID
+		  AND F.CREATE_EMP = U.USER_ID
+    </select>
     <!--获取指定机构表单列表-->
     <select id="findActDefFormItem" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.OaActDef">
         SELECT  ID,
@@ -34,6 +52,6 @@
 				DELETE_EMP,
 				DELETE_DATE
 	      FROM `OA_ACT_DEF`
-         WHERE ACTIVE = 1
+         WHERE ORG_ID = #{orgId}
     </select>
 </mapper>

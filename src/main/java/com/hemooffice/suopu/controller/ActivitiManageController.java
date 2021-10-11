@@ -67,7 +67,6 @@ public class ActivitiManageController {
      */
     @PostMapping("/activitidef-add")
     public Msg addActivitiDef(@Validated @RequestBody ActivitiDefParam activitiDefParam){
-
         //获取当前登陆机构
         Organization organization = (Organization)sessionUtil.getSessionObj("organization");
         if(organization == null){
@@ -90,6 +89,24 @@ public class ActivitiManageController {
         return Msg.success("ok");
     }
 
+    /**
+     * 加载流程定义列表
+     * @return
+     */
+    @GetMapping("/activitidef-list")
+    public Msg findActDefList(){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(activitiManageService.findActDefList(organization.getOrgId()));
+    }
+
+    /**
+     * 加载流程表单列表
+     * @return
+     */
     @GetMapping("/activitidef-formitemlist")
     public Msg findActDefFormItem(){
         //获取当前登陆机构
