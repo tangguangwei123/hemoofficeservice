@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.dto.OaActDefRes;
+import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.mapper.ActivitiManageMapper;
 import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.service.CamundaService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +89,34 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     @Override
     public List<OaActDef> findActDefFormItem(Integer orgId) {
         return activitiManageMapper.findActDefFormItem(orgId);
+    }
+
+    /**
+     * 启用或者停用流程
+     * @param orgId
+     * @param id
+     * @param active
+     * @return
+     */
+    @Override
+    public int updateActDefActive(Integer orgId, Integer id, Integer active) throws CusAuthException {
+        if(id == null){
+            throw new CusAuthException("流程ID为空！");
+        }
+        if(active == null){
+            throw new CusAuthException("active为空！");
+        }
+        return activitiManageMapper.updateActDefActive(orgId,id,active);
+    }
+
+    /**
+     * 根据流程ID加载表单
+     * @param orgId
+     * @param id
+     * @return
+     */
+    @Override
+    public List<OaActDef> findActDefFormItemById(Integer orgId, Integer id) {
+        return activitiManageMapper.findActDefFormItemById(orgId,id);
     }
 }

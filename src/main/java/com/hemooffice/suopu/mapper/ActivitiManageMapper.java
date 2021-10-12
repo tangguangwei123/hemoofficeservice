@@ -50,6 +50,22 @@ public interface ActivitiManageMapper {
      * @return
      */
     List<OaActDef> findActDefFormItem(@Param("orgId") Integer orgId);
+
+    /**
+     * 启用或者停用流程
+     * @param orgId
+     * @param id
+     * @return
+     */
+    int updateActDefActive(@Param("orgId") Integer orgId,@Param("id") Integer id, @Param("active") Integer active);
+
+    /**
+     * 根据流程ID加载表单
+     * @param orgId
+     * @param id
+     * @return
+     */
+    List<OaActDef> findActDefFormItemById(@Param("orgId") Integer orgId,@Param("id") Integer id);
 }
 
 

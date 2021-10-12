@@ -20,8 +20,9 @@ public class ActivitiDefParam {
     //审批单类别
     @NotNull(message = "审批单类别不能为空")
     private Integer category;
+
+    private String formType;
     //审批流表单对象
-    @Size(min=1,message = "请设计流程表单")
     private JSONObject formItem;
     //流程图定义
     private JSONObject flowChart;
@@ -32,6 +33,10 @@ public class ActivitiDefParam {
 
     public void setCategory(Integer category) {
         this.category = category;
+    }
+
+    public void setFormType(String formType) {
+        this.formType = formType;
     }
 
     public void setFormItem(JSONObject formItem) {
@@ -50,21 +55,15 @@ public class ActivitiDefParam {
         return category;
     }
 
+    public String getFormType() {
+        return formType;
+    }
+
     public JSONObject getFormItem() {
         return formItem;
     }
 
     public JSONObject getFlowChart() {
         return flowChart;
-    }
-
-    @Override
-    public String toString() {
-        return "ActivitiDefParam{" +
-                "name='" + name + '\'' +
-                ", category=" + category +
-                ", formItem=" + formItem +
-                ", flowChart=" + flowChart +
-                '}';
     }
 }

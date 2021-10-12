@@ -3,6 +3,7 @@ package com.hemooffice.suopu.service;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.dto.OaActDefRes;
+import com.hemooffice.suopu.exception.CusAuthException;
 
 import java.util.List;
 
@@ -49,4 +50,20 @@ public interface ActivitiManageService {
      * @return
      */
     List<OaActDef> findActDefFormItem(Integer orgId);
+
+    /**
+     * 启用或者停用流程
+     * @param orgId
+     * @param id
+     * @param active
+     * @return
+     */
+    int updateActDefActive(Integer orgId, Integer id,Integer active) throws CusAuthException;
+    /**
+     * 根据流程ID加载表单
+     * @param orgId
+     * @param id
+     * @return
+     */
+    List<OaActDef> findActDefFormItemById(Integer orgId, Integer id);
 }

@@ -21,6 +21,8 @@ public class OaActDef {
 
     private Date deleteDate;
 
+    private String formType;
+
     private String formItem;
 
     private String flowChart;
@@ -95,6 +97,14 @@ public class OaActDef {
 
     public void setDeleteDate(Date deleteDate) {
         this.deleteDate = deleteDate;
+    }
+
+    public String getFormType() {
+        return formType;
+    }
+
+    public void setFormType(String formType) {
+        this.formType = formType;
     }
 
     public String getFormItem() {

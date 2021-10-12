@@ -19,8 +19,8 @@
     </update>
     <!--插入流程定义-->
     <insert id="addActDef" parameterType="com.hemooffice.suopu.dto.OaActDef" useGeneratedKeys="true" keyProperty="id" >
-        INSERT INTO `OA_ACT_DEF` (`NAME`,CATEGORY_ID,FORM_ITEM,FLOW_CHART,ORG_ID,CREATE_EMP,CREATE_DATE,ACTIVE)
-									VALUES (#{name}, #{categoryId}, #{formItem}, #{flowChart}, #{orgId}, #{createEmp}, now(),1);
+        INSERT INTO `OA_ACT_DEF` (`NAME`,CATEGORY_ID, FORM_TYPE, FORM_ITEM,FLOW_CHART,ORG_ID,CREATE_EMP,CREATE_DATE,ACTIVE)
+									VALUES (#{name}, #{categoryId}, #{formType}, #{formItem}, #{flowChart}, #{orgId}, #{createEmp}, now(),1);
     </insert>
 
     <!--获取指定机构流程列表-->
@@ -53,5 +53,25 @@
 				DELETE_DATE
 	      FROM `OA_ACT_DEF`
          WHERE ORG_ID = #{orgId}
+    </select>
+    <!--启用或者停用流程-->
+    <update id="updateActDefActive" >
+      UPDATE `OA_ACT_DEF` D SET D.ACTIVE = #{active} WHERE D.ORG_ID = #{orgId} AND D.ID = #{id}
+    </update>
+    <!--根据流程ID加载表单-->
+    <select id="findActDefFormItemById" resultType="com.hemooffice.suopu.dto.OaActDef" >
+        SELECT  ID,
+				`NAME`,
+				CATEGORY_ID,
+				FORM_TYPE,
+				FORM_ITEM,
+				ORG_ID,
+				CREATE_EMP,
+				ACTIVE,
+				DELETE_EMP,
+				DELETE_DATE
+	      FROM `OA_ACT_DEF`
+         WHERE ORG_ID = #{orgId}
+           AND ID = #{id}
     </select>
 </mapper>
