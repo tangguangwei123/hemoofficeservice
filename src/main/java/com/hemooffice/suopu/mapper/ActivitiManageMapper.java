@@ -66,6 +66,28 @@ public interface ActivitiManageMapper {
      * @return
      */
     List<OaActDef> findActDefFormItemById(@Param("orgId") Integer orgId,@Param("id") Integer id);
+
+    /**
+     * 根据流程ID加载Bpmn
+     * @param orgId
+     * @param id
+     * @return
+     */
+    List<OaActDef> findActDefBpmn(@Param("orgId") Integer orgId,@Param("id") Integer id);
+    /**
+     * 更新流程定义根据流程ID
+     * @param oaActDef
+     * @return
+     */
+    int updateActDefById(OaActDef oaActDef);
+
+    /**
+     * 根据ID加载流程定义
+     * @param orgId
+     * @param id
+     * @return
+     */
+    OaActDef findActDefById(@Param("orgId") Integer orgId,@Param("id") Integer id);
 }
 
 

@@ -4,6 +4,7 @@ import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.dto.OaActDefRes;
 import com.hemooffice.suopu.exception.CusAuthException;
+import org.camunda.feel.syntaxtree.In;
 
 import java.util.List;
 
@@ -66,4 +67,18 @@ public interface ActivitiManageService {
      * @return
      */
     List<OaActDef> findActDefFormItemById(Integer orgId, Integer id);
+
+    /**
+     * 根据流程ID加载Bpmn
+     * @param orgId
+     * @param id
+     * @return
+     */
+    List<OaActDef> findActDefBpmn(Integer orgId, Integer id);
+    /**
+     * 更新流程定义表单定义
+     * @param oaActDef
+     * @return
+     */
+    int updateActDefForm(OaActDef oaActDef) throws CusAuthException;
 }

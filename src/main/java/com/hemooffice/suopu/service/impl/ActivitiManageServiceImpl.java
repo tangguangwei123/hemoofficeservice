@@ -119,4 +119,31 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     public List<OaActDef> findActDefFormItemById(Integer orgId, Integer id) {
         return activitiManageMapper.findActDefFormItemById(orgId,id);
     }
+
+    /**
+     * 根据流程ID加载Bpmn
+     * @param orgId
+     * @param id
+     * @return
+     */
+    @Override
+    public List<OaActDef> findActDefBpmn(Integer orgId, Integer id) {
+        return activitiManageMapper.findActDefBpmn(orgId,id);
+    }
+
+    /**
+     * 更新流程定义表单定义
+     * @param oaActDef
+     * @return
+     */
+    @Override
+    public int updateActDefForm(OaActDef oaActDef) throws CusAuthException {
+        //根据id查询数据库次流程定义内容
+        OaActDef dOaActDef = activitiManageMapper.findActDefById(oaActDef.getOrgId(),oaActDef.getId());
+        if(dOaActDef == null){
+            throw new CusAuthException("不存在此流程定义！");
+        }
+        dOaActDef.setFormItem(oaActDef.getFormItem());
+        return activitiManageMapper.updateActDefById(dOaActDef);
+    }
 }

@@ -153,4 +153,37 @@ public class ActivitiManageController {
         }
         return Msg.success(activitiManageService.findActDefFormItemById(organization.getOrgId(),id));
     }
+    /**
+     * 加载流程定义bpmn
+     * @return
+     */
+    @GetMapping("/activitidef-bpmnbyid")
+    public Msg findActDefBpmnById(@NotNull(message = "审批类别id不能为空") @RequestParam("id") Integer id){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(activitiManageService.findActDefBpmn(organization.getOrgId(),id));
+    }
+
+    /**
+     * 更新流程定义表单定义
+     * @return
+     */
+    @PostMapping("/activitidef-updateactdefform")
+    public Msg updaeActDefForm(@RequestBody OaActDef oaActDef){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        oaActDef.setOrgId(organization.getOrgId());
+        try {
+            return Msg.success(activitiManageService.updateActDefForm(oaActDef));
+        } catch (CusAuthException e) {
+            e.printStackTrace();
+            return Msg.send(505,e.getMessage());
+        }
+    }
 }

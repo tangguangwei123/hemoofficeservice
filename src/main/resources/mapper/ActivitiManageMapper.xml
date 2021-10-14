@@ -74,4 +74,41 @@
          WHERE ORG_ID = #{orgId}
            AND ID = #{id}
     </select>
+    <!--根据流程ID加载Bpmn-->
+    <select id="findActDefBpmn" resultType="com.hemooffice.suopu.dto.OaActDef" >
+        SELECT  ID,
+				 `NAME`,
+				 CATEGORY_ID,
+				 FLOW_CHART,
+				 ORG_ID,
+				 CREATE_EMP,
+				 ACTIVE,
+				 DELETE_EMP,
+				 DELETE_DATE
+	      FROM `OA_ACT_DEF`
+         WHERE ORG_ID = #{orgId}
+           AND ID = #{id}
+    </select>
+    <!--更新流程定义根据流程ID-->
+    <update id="updateActDefById" parameterType="com.hemooffice.suopu.dto.OaActDef">
+        UPDATE `OA_ACT_DEF`
+           SET `NAME` = #{name},
+                 CATEGORY_ID = #{categoryId},
+                     FORM_TYPE = #{formType},
+                     FORM_ITEM = #{formItem},
+                     FLOW_CHART = #{flowChart},
+                     ACTIVE = #{active},
+                     DELETE_EMP = #{deleteEmp},
+                     DELETE_DATE = #{deleteDate}
+        WHERE  ORG_ID = #{orgId}
+          AND   ID = #{id}
+    </update>
+
+    <!--根据id加载流程定义-->
+    <select id="findActDefById" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.OaActDef">
+        SELECT *
+	      FROM `OA_ACT_DEF`
+         WHERE ORG_ID = #{orgId}
+           AND ID = #{id}
+    </select>
 </mapper>
