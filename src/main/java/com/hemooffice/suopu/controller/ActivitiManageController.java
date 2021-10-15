@@ -186,4 +186,23 @@ public class ActivitiManageController {
             return Msg.send(505,e.getMessage());
         }
     }
+    /**
+     * 更新流程定义表单定义
+     * @return
+     */
+    @PostMapping("/activitidef-updateactdefbpmn")
+    public Msg updaeActDefBpmn(@RequestBody OaActDef oaActDef){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        oaActDef.setOrgId(organization.getOrgId());
+        try {
+            return Msg.success(activitiManageService.updateActDefBpmn(oaActDef));
+        } catch (CusAuthException e) {
+            e.printStackTrace();
+            return Msg.send(505,e.getMessage());
+        }
+    }
 }
