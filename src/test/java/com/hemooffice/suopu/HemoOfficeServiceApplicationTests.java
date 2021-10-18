@@ -3,6 +3,7 @@ package com.hemooffice.suopu;
 import com.hemooffice.suopu.dto.Permission;
 import com.hemooffice.suopu.mapper.DeptMapper;
 import com.hemooffice.suopu.mapper.RoleMapper;
+import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.utils.CommonUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,10 @@ class HemoOfficeServiceApplicationTests {
     private DeptMapper deptMapper;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private ActivitiManageService activitiManageService;
     @Test
     void contextLoads() throws UnsupportedEncodingException {
-        System.out.print(roleMapper.findRoleByUserId(1,1));
+        System.out.print(activitiManageService.findActDefById(1,10000));
     }
 }

@@ -204,4 +204,18 @@ public class ActivitiManageController {
             return Msg.send(505,e.getMessage());
         }
     }
+
+    /**
+     * 加载流程定义信息
+     * @return
+     */
+    @GetMapping("/activitidef-byid")
+    public Msg findActDefById(@NotNull(message = "审批类别id不能为空") @RequestParam("id") Integer id){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(activitiManageService.findActDefById(organization.getOrgId(),id));
+    }
 }

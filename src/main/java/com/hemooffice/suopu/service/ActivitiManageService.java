@@ -89,4 +89,12 @@ public interface ActivitiManageService {
      * @throws CusAuthException
      */
     int updateActDefBpmn(OaActDef oaActDef) throws CusAuthException;
+
+    /**
+     * 根据ID加载流程定义
+     * @param orgId
+     * @param id
+     * @return
+     */
+    OaActDef findActDefById(Integer orgId,Integer id);
 }

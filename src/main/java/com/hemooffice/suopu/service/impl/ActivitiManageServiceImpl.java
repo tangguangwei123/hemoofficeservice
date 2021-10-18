@@ -163,4 +163,15 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
         dOaActDef.setFlowChart(oaActDef.getFlowChart());
         return activitiManageMapper.updateActDefById(dOaActDef);
     }
+
+    /**
+     * 根据ID加载流程定义
+     * @param orgId
+     * @param id
+     * @return
+     */
+    @Override
+    public OaActDef findActDefById(Integer orgId, Integer id) {
+        return activitiManageMapper.findActDefById(orgId,id);
+    }
 }
