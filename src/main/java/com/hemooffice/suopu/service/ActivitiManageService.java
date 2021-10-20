@@ -3,6 +3,7 @@ package com.hemooffice.suopu.service;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.dto.OaActDefRes;
+import com.hemooffice.suopu.dto.OaActFile;
 import com.hemooffice.suopu.exception.CusAuthException;
 import org.camunda.feel.syntaxtree.In;
 
@@ -97,4 +98,11 @@ public interface ActivitiManageService {
      * @return
      */
     OaActDef findActDefById(Integer orgId,Integer id);
+
+    /**
+     * 插入流程附件
+     * @param oaActFile
+     * @return
+     */
+    int insertOaActFile(OaActFile oaActFile);
 }

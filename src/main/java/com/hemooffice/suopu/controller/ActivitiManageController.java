@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 
@@ -217,5 +218,12 @@ public class ActivitiManageController {
             return Msg.send(401,"redis中机构信息为空,请重新登陆");
         }
         return Msg.success(activitiManageService.findActDefById(organization.getOrgId(),id));
+    }
+
+    @PostMapping("/startapproval-uploadfile")
+    public Msg insertOaActFile(@RequestParam(value = "file") MultipartFile file) {
+        logger.info(file.toString());
+        OaActFile oaActFile = new OaActFile();
+        return Msg.success(activitiManageService.insertOaActFile(oaActFile));
     }
 }

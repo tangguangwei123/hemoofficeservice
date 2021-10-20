@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.dto.OaActDefRes;
+import com.hemooffice.suopu.dto.OaActFile;
 import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.mapper.ActivitiManageMapper;
 import com.hemooffice.suopu.service.ActivitiManageService;
@@ -173,5 +174,15 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     @Override
     public OaActDef findActDefById(Integer orgId, Integer id) {
         return activitiManageMapper.findActDefById(orgId,id);
+    }
+
+    /**
+     * 插入流程附件
+     * @param oaActFile
+     * @return
+     */
+    @Override
+    public int insertOaActFile(OaActFile oaActFile) {
+        return activitiManageMapper.insertOaActFile(oaActFile);
     }
 }

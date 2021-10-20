@@ -3,6 +3,7 @@ package com.hemooffice.suopu.mapper;
 import com.hemooffice.suopu.dto.OaActCategory;
 import com.hemooffice.suopu.dto.OaActDef;
 import com.hemooffice.suopu.dto.OaActDefRes;
+import com.hemooffice.suopu.dto.OaActFile;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -88,6 +89,13 @@ public interface ActivitiManageMapper {
      * @return
      */
     OaActDef findActDefById(@Param("orgId") Integer orgId,@Param("id") Integer id);
+
+    /**
+     * 插入流程附件
+     * @param oaActFile
+     * @return
+     */
+    int insertOaActFile(OaActFile oaActFile);
 }
 
 
