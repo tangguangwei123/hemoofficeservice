@@ -220,7 +220,12 @@ public class ActivitiManageController {
         return Msg.success(activitiManageService.findActDefById(organization.getOrgId(),id));
     }
 
-    @PostMapping("/startapproval-uploadfile")
+    /**
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping("/approval-uploadfile")
     public Msg insertOaActFile(@RequestParam(value = "file") MultipartFile file) {
         logger.info(file.toString());
         OaActFile oaActFile = new OaActFile();
