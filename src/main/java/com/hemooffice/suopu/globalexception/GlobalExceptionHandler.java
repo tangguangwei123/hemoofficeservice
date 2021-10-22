@@ -17,6 +17,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -94,6 +95,10 @@ public class GlobalExceptionHandler {
         } else if (e instanceof CusAuthException) {
             jsonObject.put("status", 505);
             jsonObject.put("message", e.getMessage());
+            e.printStackTrace();
+        }else if (e instanceof MethodArgumentTypeMismatchException) {
+            jsonObject.put("status", 505);
+            jsonObject.put("message", "参数转换异常:" + e.getMessage());
             e.printStackTrace();
         } else {
             jsonObject.put("status", 500);

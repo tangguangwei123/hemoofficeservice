@@ -1,23 +1,22 @@
 package com.hemooffice.suopu.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hemooffice.suopu.dto.OaActCategory;
-import com.hemooffice.suopu.dto.OaActDef;
-import com.hemooffice.suopu.dto.OaActDefRes;
-import com.hemooffice.suopu.dto.OaActFile;
+import com.hemooffice.suopu.dto.*;
 import com.hemooffice.suopu.exception.CusAuthException;
+import com.hemooffice.suopu.exception.CusSystemException;
 import com.hemooffice.suopu.mapper.ActivitiManageMapper;
 import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.service.CamundaService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.dc.pr.PRError;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ActivitiManageServiceImpl implements ActivitiManageService {
@@ -178,11 +177,50 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
 
     /**
      * 插入流程附件
-     * @param oaActFile
+     * @param file
      * @return
      */
     @Override
-    public int insertOaActFile(OaActFile oaActFile) {
-        return activitiManageMapper.insertOaActFile(oaActFile);
+    public int insertOaActFile(Integer orgId, Integer bpmnId, String elementId, MultipartFile file, User user) throws CusAuthException, CusSystemException {
+        if (file.isEmpty()) {
+            throw new CusAuthException("文件不能为空");
+        }
+        // 获取文件名
+        String fileOriginalName = file.getOriginalFilename();
+        // 获取文件的后缀名
+        String suffixName = fileOriginalName.substring(fileOriginalName.lastIndexOf("."));
+        // 解决中文问题，liunx下中文路径，图片显示问题
+        String fileName = UUID.randomUUID() + suffixName;
+        //封装参数
+        OaActFile oaActFile = new OaActFile();
+        oaActFile.setFileName(fileName);
+        oaActFile.setOrgId(orgId);
+        oaActFile.setFileOriginalName(fileOriginalName);
+        oaActFile.setBpmnId(bpmnId);
+        oaActFile.setElementId(elementId);
+        oaActFile.setUploadUser(user.getUserId());
+        try {
+            oaActFile.setFileContent(file.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CusSystemException("读取附件内容失败");
+        }
+        oaActFile.setActive(1);
+
+        activitiManageMapper.insertOaActFile(oaActFile);
+
+        return oaActFile.getFileId();
+    }
+
+    /**
+     * 删除流程附件
+     * @param orgId
+     * @param fileId
+     * @return
+     */
+    @Override
+    public int removeOaActFile(Integer orgId, Integer fileId) {
+        //删除此附件
+        return activitiManageMapper.removeOaActFile(orgId,fileId);
     }
 }

@@ -111,9 +111,14 @@
          WHERE ORG_ID = #{orgId}
            AND ID = #{id}
     </select>
+
     <!--插入流程附件-->
     <insert id="insertOaActFile" parameterType="com.hemooffice.suopu.dto.OaActFile" useGeneratedKeys="true" keyProperty="fileId" >
-      INSERT INTO `OA_ACT_FILE` (FILE_NAME, FILE_ORIGINAL_NAME, FILE_PATH, BPMN_ID, ELEMENT_ID, UPLOAD_USER, CREATE_DATE, FILE_CONTENT)
-			  VALUES (#{fileName}, #{fileOriginalName}, #{filePath}, #{bpmnId}, #{elementId}, #{uploadUser}, NOW(), #{fileContent})
+      INSERT INTO `OA_ACT_FILE` (FILE_NAME, ORG_ID, FILE_ORIGINAL_NAME, FILE_PATH, BPMN_ID, ELEMENT_ID, UPLOAD_USER, CREATE_DATE, FILE_CONTENT, ACTIVE)
+			  VALUES (#{fileName}, #{orgId}, #{fileOriginalName}, #{filePath}, #{bpmnId}, #{elementId}, #{uploadUser}, NOW(), #{fileContent}, #{active})
     </insert>
+    <!--删除流程附件-->
+    <update id="removeOaActFile" parameterType="java.lang.Integer">
+      UPDATE `OA_ACT_FILE` F SET ACTIVE = 0 WHERE F.ORG_ID = #{orgId} AND F.FILE_ID = #{fileId}
+    </update>
 </mapper>

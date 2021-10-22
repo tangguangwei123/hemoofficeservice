@@ -2,8 +2,10 @@ package com.hemooffice.suopu.controller;
 
 import com.hemooffice.suopu.dto.*;
 import com.hemooffice.suopu.exception.CusAuthException;
+import com.hemooffice.suopu.exception.CusSystemException;
 import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.utils.SessionUtil;
+import org.camunda.feel.syntaxtree.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,9 +228,43 @@ public class ActivitiManageController {
      * @return
      */
     @PostMapping("/approval-uploadfile")
-    public Msg insertOaActFile(@RequestParam(value = "file") MultipartFile file) {
-        logger.info(file.toString());
-        OaActFile oaActFile = new OaActFile();
-        return Msg.success(activitiManageService.insertOaActFile(oaActFile));
+    public Msg insertOaActFile(@RequestParam(value = "bpmnId") Integer bpmnId,
+                               @RequestParam(value = "elementId") String elementId,
+                               @RequestParam(value = "file") MultipartFile file) {
+        //获取当前登陆机构
+        User user = (User)sessionUtil.getSessionObj("user");
+        if(user == null){
+            return Msg.send(401,"redis中用户信息为空,请重新登陆");
+        }
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+
+        try {
+            return Msg.success(activitiManageService.insertOaActFile(organization.getOrgId(), bpmnId, elementId, file, user));
+        } catch (CusAuthException e) {
+            e.printStackTrace();
+            return Msg.send(505, e.getMessage());
+        } catch (CusSystemException e){
+            e.printStackTrace();
+            return Msg.send(505, e.getMessage());
+        }
+    }
+
+    /**
+     * 删除流程附件
+     * @param fileId
+     * @return
+     */
+    @GetMapping("/approval-removefile")
+    public Msg removeOaActFile(@RequestParam("fileId") Integer fileId){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        return Msg.success(activitiManageService.removeOaActFile(organization.getOrgId(), fileId));
     }
 }

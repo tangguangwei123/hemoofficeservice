@@ -96,6 +96,13 @@ public interface ActivitiManageMapper {
      * @return
      */
     int insertOaActFile(OaActFile oaActFile);
+
+    /**
+     * 删除流程附件
+     * @param fileId
+     * @return
+     */
+    int removeOaActFile(@Param("orgId") Integer orgId, @Param("fileId") Integer fileId);
 }
 
 

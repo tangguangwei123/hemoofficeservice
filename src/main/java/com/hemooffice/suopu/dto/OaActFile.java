@@ -5,13 +5,15 @@ import java.util.Date;
 public class OaActFile {
     private Integer fileId;
 
+    private Integer orgId;
+
     private String fileName;
 
     private String fileOriginalName;
 
     private String filePath;
 
-    private String bpmnId;
+    private Integer bpmnId;
 
     private String elementId;
 
@@ -25,12 +27,22 @@ public class OaActFile {
 
     private byte[] fileContent;
 
+    private Integer active;
+
     public Integer getFileId() {
         return fileId;
     }
 
     public void setFileId(Integer fileId) {
         this.fileId = fileId;
+    }
+
+    public void setOrgId(Integer orgId) {
+        this.orgId = orgId;
+    }
+
+    public Integer getOrgId() {
+        return orgId;
     }
 
     public String getFileName() {
@@ -57,12 +69,12 @@ public class OaActFile {
         this.filePath = filePath == null ? null : filePath.trim();
     }
 
-    public String getBpmnId() {
+    public Integer getBpmnId() {
         return bpmnId;
     }
 
-    public void setBpmnId(String bpmnId) {
-        this.bpmnId = bpmnId == null ? null : bpmnId.trim();
+    public void setBpmnId(Integer bpmnId) {
+        this.bpmnId = bpmnId;
     }
 
     public String getElementId() {
@@ -111,5 +123,13 @@ public class OaActFile {
 
     public void setFileContent(byte[] fileContent) {
         this.fileContent = fileContent;
+    }
+
+    public void setActive(Integer active) {
+        this.active = active;
+    }
+
+    public Integer getActive() {
+        return active;
     }
 }

@@ -1,11 +1,10 @@
 package com.hemooffice.suopu.service;
 
-import com.hemooffice.suopu.dto.OaActCategory;
-import com.hemooffice.suopu.dto.OaActDef;
-import com.hemooffice.suopu.dto.OaActDefRes;
-import com.hemooffice.suopu.dto.OaActFile;
+import com.hemooffice.suopu.dto.*;
 import com.hemooffice.suopu.exception.CusAuthException;
+import com.hemooffice.suopu.exception.CusSystemException;
 import org.camunda.feel.syntaxtree.In;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -101,8 +100,16 @@ public interface ActivitiManageService {
 
     /**
      * 插入流程附件
-     * @param oaActFile
+     * @param file
      * @return
      */
-    int insertOaActFile(OaActFile oaActFile);
+    int insertOaActFile(Integer orgId, Integer bpmnId, String elementId, MultipartFile file, User user) throws CusAuthException, CusSystemException;
+
+    /**
+     *删除流程附件
+     * @param orgId
+     * @param fileId
+     * @return
+     */
+    int removeOaActFile(Integer orgId, Integer fileId);
 }
