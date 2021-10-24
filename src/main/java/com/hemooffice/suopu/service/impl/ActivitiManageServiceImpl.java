@@ -223,4 +223,15 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
         //删除此附件
         return activitiManageMapper.removeOaActFile(orgId,fileId);
     }
+
+    /**
+     * 根据机构id、流程id、附件id查询附件列表
+     * @param orgId
+     * @param actId
+     * @return
+     */
+    @Override
+    public List<OaActFile> findOaActFileListByFileIdOrgIdActId(Integer orgId, Integer actId) {
+        return activitiManageMapper.findOaActFileListByFileIdOrgIdActId(orgId,actId);
+    }
 }

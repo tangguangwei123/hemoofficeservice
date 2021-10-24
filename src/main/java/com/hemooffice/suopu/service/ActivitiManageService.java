@@ -112,4 +112,11 @@ public interface ActivitiManageService {
      * @return
      */
     int removeOaActFile(Integer orgId, Integer fileId);
+    /**
+     *根据机构id、流程id、附件id查询附件列表
+     * @param orgId
+     * @return
+     */
+    List<OaActFile> findOaActFileListByFileIdOrgIdActId(Integer orgId, Integer actId);
+
 }

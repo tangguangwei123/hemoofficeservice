@@ -103,6 +103,13 @@ public interface ActivitiManageMapper {
      * @return
      */
     int removeOaActFile(@Param("orgId") Integer orgId, @Param("fileId") Integer fileId);
+
+    /**
+     *根据机构id、流程id、附件id查询附件列表
+     * @param orgId
+     * @return
+     */
+    List<OaActFile> findOaActFileListByFileIdOrgIdActId(@Param("orgId") Integer orgId, @Param("actId") Integer actId);
 }
 
 

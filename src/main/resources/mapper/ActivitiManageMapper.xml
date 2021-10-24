@@ -121,4 +121,18 @@
     <update id="removeOaActFile" parameterType="java.lang.Integer">
       UPDATE `OA_ACT_FILE` F SET ACTIVE = 0 WHERE F.ORG_ID = #{orgId} AND F.FILE_ID = #{fileId}
     </update>
+
+    <!--根据机构id、流程id、附件id查询附件列表-->
+    <select id="findOaActFileListByFileIdOrgIdActId" resultType="com.hemooffice.suopu.dto.OaActFile">
+    SELECT OF.FILE_ID,
+			OF.ORG_ID,
+			OF.FILE_NAME,
+			OF.FILE_ORIGINAL_NAME,
+			OF.BPMN_ID,
+			OF.ELEMENT_ID
+      FROM `OA_ACT_FILE` OF
+     WHERE OF.ACTIVE = 1
+         AND OF.ORG_ID = #{orgId}
+         AND OF.BPMN_ID = #{actId}
+    </select>
 </mapper>
