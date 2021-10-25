@@ -3,6 +3,7 @@ package com.hemooffice.suopu.globalexception;
 import com.alibaba.fastjson.JSONObject;
 import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.exception.CusSystemException;
+import com.hemooffice.suopu.exception.LoginAuthException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
@@ -46,6 +47,9 @@ public class GlobalExceptionHandler {
         } else if (e instanceof UnauthenticatedException) {
             jsonObject.put("status", 401);
             jsonObject.put("message", "用户未登录,请登录");
+        } else if (e instanceof LoginAuthException) {
+            jsonObject.put("status", 401);
+            jsonObject.put("message", e.getMessage());
         } else if (e instanceof AuthorizationException) {
             jsonObject.put("status", 402);
             jsonObject.put("message", "权限不足");

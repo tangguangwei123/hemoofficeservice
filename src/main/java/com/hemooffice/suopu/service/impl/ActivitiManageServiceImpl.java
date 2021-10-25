@@ -234,4 +234,16 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     public List<OaActFile> findOaActFileListByFileIdOrgIdActId(Integer orgId, Integer actId) {
         return activitiManageMapper.findOaActFileListByFileIdOrgIdActId(orgId,actId);
     }
+
+    /**
+     * 根据机构id、流程id、附件id查询附件blob内容
+     * @param orgId
+     * @param actId
+     * @param fileId
+     * @return
+     */
+    @Override
+    public OaActFile findFileContentByFileIdOrgIdActId(Integer orgId, Integer actId, Integer fileId) {
+        return activitiManageMapper.findFileContentByFileIdOrgIdActId(orgId, actId, fileId);
+    }
 }

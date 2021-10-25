@@ -135,4 +135,18 @@
          AND OF.ORG_ID = #{orgId}
          AND OF.BPMN_ID = #{actId}
     </select>
+    <!--根据机构id、流程id、附件id查询附件blob内容-->
+    <select id="findFileContentByFileIdOrgIdActId" resultType="com.hemooffice.suopu.dto.OaActFile">
+     SELECT OF.FILE_ID,
+			OF.ORG_ID,
+			OF.FILE_NAME,
+			OF.FILE_ORIGINAL_NAME,
+			OF.BPMN_ID,
+			OF.FILE_CONTENT
+      FROM `OA_ACT_FILE` OF
+     WHERE OF.ACTIVE = 1
+         AND OF.ORG_ID = #{orgId}
+         AND OF.BPMN_ID = #{actId}
+         AND OF.FILE_ID = #{fileId}
+    </select>
 </mapper>

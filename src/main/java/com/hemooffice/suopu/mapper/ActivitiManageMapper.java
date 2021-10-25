@@ -110,6 +110,14 @@ public interface ActivitiManageMapper {
      * @return
      */
     List<OaActFile> findOaActFileListByFileIdOrgIdActId(@Param("orgId") Integer orgId, @Param("actId") Integer actId);
+
+    /**
+     * 根据机构id、流程id、附件id查询附件blob内容
+     * @param orgId
+     * @param actId
+     * @return
+     */
+    OaActFile findFileContentByFileIdOrgIdActId(@Param("orgId") Integer orgId, @Param("actId") Integer actId, @Param("fileId") Integer fileId);
 }
 
 

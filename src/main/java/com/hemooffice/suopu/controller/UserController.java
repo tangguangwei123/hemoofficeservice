@@ -161,6 +161,8 @@ public class UserController {
                 e.printStackTrace();
                 return Msg.send(505,e.getMessage());
             }
+            //存入token
+            redisTemplate.opsForValue().set(token+ ":token",token,GlobalParam.CACHETIME,TimeUnit.SECONDS);
             //使用token做主键 将user信息存入redis
             redisTemplate.opsForValue().set(token+ ":user",dUser,GlobalParam.CACHETIME,TimeUnit.SECONDS);
             //存入机构信息到redis

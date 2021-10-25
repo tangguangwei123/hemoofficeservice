@@ -118,5 +118,12 @@ public interface ActivitiManageService {
      * @return
      */
     List<OaActFile> findOaActFileListByFileIdOrgIdActId(Integer orgId, Integer actId);
+    /**
+     * 根据机构id、流程id、附件id查询附件blob内容
+     * @param orgId
+     * @param actId
+     * @return
+     */
+    OaActFile findFileContentByFileIdOrgIdActId(Integer orgId, Integer actId, Integer fileId);
 
 }

@@ -3,17 +3,33 @@ package com.hemooffice.suopu.controller;
 import com.hemooffice.suopu.dto.*;
 import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.exception.CusSystemException;
+import com.hemooffice.suopu.exception.LoginAuthException;
 import com.hemooffice.suopu.service.ActivitiManageService;
+import com.hemooffice.suopu.utils.IpAdrressUtil;
 import com.hemooffice.suopu.utils.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.SecurityUtils;
 import org.camunda.feel.syntaxtree.In;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.activation.MimetypesFileTypeMap;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
 
 @Validated
 @RestController
@@ -25,6 +41,8 @@ public class ActivitiManageController {
     private ActivitiManageService activitiManageService;
     @Autowired
     private SessionUtil sessionUtil;
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String,Object> redisTemplate;
 
     @PostMapping("/add-category")
     public Msg addActCategory(@Validated @RequestBody OaActCategory oaActCategory){
@@ -281,5 +299,56 @@ public class ActivitiManageController {
             return Msg.send(401,"redis中机构信息为空,请重新登陆");
         }
         return Msg.success(activitiManageService.findOaActFileListByFileIdOrgIdActId(organization.getOrgId(),actId));
+    }
+
+    /**
+     * 附件下载
+     * @param actId
+     * @param fileId
+     * @param request
+     * @throws Exception
+     */
+    @GetMapping("/approval-filedownload")
+    public void download(@RequestParam("actId") Integer actId,@RequestParam("fileId") Integer fileId, @Param("token") String token, HttpServletRequest request) throws Exception {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletResponse response = requestAttributes.getResponse();
+
+        String rToken = redisTemplate.opsForValue().get(token+":token") == null ? null : redisTemplate.opsForValue().get(token+":token").toString();
+        if(rToken == null){
+            throw new LoginAuthException("redis中登录信息为空或无效,请重新登陆");
+        }
+
+        //获取当前登陆机构
+        Organization organization = (Organization) redisTemplate.opsForValue().get(token+":organization");
+
+        if(organization == null){
+            throw new LoginAuthException("redis中机构信息为空,请重新登陆");
+        }
+        //根据id得到文件内容blob
+        OaActFile oaActFile = activitiManageService.findFileContentByFileIdOrgIdActId(organization.getOrgId(),actId,fileId);
+        //获取ip写入日志
+        logger.info("IP地址:"+IpAdrressUtil.getIpAdrress(request)+"下载了附件:"+oaActFile.getFileOriginalName());
+
+        response.reset(); // 非常重要
+        // 设置信息给客户端不解析
+        String type = new MimetypesFileTypeMap().getContentType(oaActFile.getFileName());
+        // 设置contenttype，即告诉客户端所发送的数据属于什么类型
+        response.setHeader("Content-type", type);
+        // 设置编码
+        //String codding = new String(fileName.getBytes("utf-8"), "iso-8859-1");
+        // 设置扩展头，当Content-Type 的类型为要下载的类型时 , 这个信息头会告诉浏览器这个文件的名字和类型。
+        //response.setHeader("Content-Disposition", "attachment;filename=" + codding);
+        response.setContentType("application/x-msdownload");
+        //采用中文文件名需要在此处转码
+        oaActFile.setFileOriginalName(new String(oaActFile.getFileOriginalName().getBytes("GB2312"), "ISO_8859_1"));
+        response.setHeader("Content-Disposition", "attachment; filename=" + oaActFile.getFileOriginalName());
+        response.setHeader("Access-Control-Allow-Origin", "*");
+
+        OutputStream os = null;
+        byte[] content = oaActFile.getFileContent();//获得Oracle数据库blob字段值
+        os = response.getOutputStream();
+        os.write(content);//下载
+        os.flush();
+        os.close();
     }
 }

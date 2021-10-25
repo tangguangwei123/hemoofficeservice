@@ -148,6 +148,7 @@ public class ShiroConfig {
 
         filterChainDefinitionManager.put("/api/login", "anon");
         filterChainDefinitionManager.put("/api/401/**", "anon");
+        filterChainDefinitionManager.put("/api/act/approval-filedownload", "anon");
         //filterChainDefinitionManager.put("/api/**", "anon");
         filterChainDefinitionManager.put("/api/publickeystr", "anon");
         //filterChainDefinitionManager.put("/api/generateRsa", "anon");
