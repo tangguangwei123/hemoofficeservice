@@ -5,6 +5,8 @@ import java.util.Date;
 public class OaActDef {
     private Integer id;
 
+    private String deploymentId;
+
     private String name;
 
     private Integer categoryId;
@@ -33,6 +35,14 @@ public class OaActDef {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDeploymentId() {
+        return deploymentId;
+    }
+
+    public void setDeploymentId(String deploymentId) {
+        this.deploymentId = deploymentId;
     }
 
     public String getName() {

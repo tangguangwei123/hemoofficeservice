@@ -126,4 +126,11 @@ public interface ActivitiManageService {
      */
     OaActFile findFileContentByFileIdOrgIdActId(Integer orgId, Integer actId, Integer fileId);
 
+    /**
+     * 发起审批
+     * @param orgId
+     * @param deploymentId
+     * @return
+     */
+    String startHandleApproval(Integer orgId, String deploymentId) throws CusAuthException;
 }

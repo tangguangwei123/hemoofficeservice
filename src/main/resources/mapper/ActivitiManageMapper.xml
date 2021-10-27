@@ -19,13 +19,14 @@
     </update>
     <!--插入流程定义-->
     <insert id="addActDef" parameterType="com.hemooffice.suopu.dto.OaActDef" useGeneratedKeys="true" keyProperty="id" >
-        INSERT INTO `OA_ACT_DEF` (`NAME`,CATEGORY_ID, FORM_TYPE, FORM_ITEM,FLOW_CHART,ORG_ID,CREATE_EMP,CREATE_DATE,ACTIVE)
-									VALUES (#{name}, #{categoryId}, #{formType}, #{formItem}, #{flowChart}, #{orgId}, #{createEmp}, now(),1);
+        INSERT INTO `OA_ACT_DEF` (DEPLOYMENT_ID, `NAME`,CATEGORY_ID, FORM_TYPE, FORM_ITEM,FLOW_CHART,ORG_ID,CREATE_EMP,CREATE_DATE,ACTIVE)
+									VALUES (#{deploymentId}, #{name}, #{categoryId}, #{formType}, #{formItem}, #{flowChart}, #{orgId}, #{createEmp}, now(),1);
     </insert>
 
     <!--获取指定机构流程列表-->
     <select id="findActDefList" resultType="com.hemooffice.suopu.dto.OaActDefRes" >
             SELECT  F.ID,
+                    F.DEPLOYMENT_ID,
                     F.`NAME`,
                     F.CATEGORY_ID,
                     F.ORG_ID,
@@ -43,6 +44,7 @@
     <!--获取指定机构表单列表-->
     <select id="findActDefFormItem" parameterType="java.lang.Integer" resultType="com.hemooffice.suopu.dto.OaActDef">
         SELECT  ID,
+                 DEPLOYMENT_ID,
 				`NAME`,
 				CATEGORY_ID,
 				FORM_ITEM,
@@ -61,6 +63,7 @@
     <!--根据流程ID加载表单-->
     <select id="findActDefFormItemById" resultType="com.hemooffice.suopu.dto.OaActDef" >
         SELECT  ID,
+                DEPLOYMENT_ID,
 				`NAME`,
 				CATEGORY_ID,
 				FORM_TYPE,
@@ -76,7 +79,8 @@
     </select>
     <!--根据流程ID加载Bpmn-->
     <select id="findActDefBpmn" resultType="com.hemooffice.suopu.dto.OaActDef" >
-        SELECT  ID,
+        SELECT   ID,
+                 DEPLOYMENT_ID,
 				 `NAME`,
 				 CATEGORY_ID,
 				 FLOW_CHART,
@@ -148,5 +152,18 @@
          AND OF.ORG_ID = #{orgId}
          AND OF.BPMN_ID = #{actId}
          AND OF.FILE_ID = #{fileId}
+    </select>
+    <!--根据机构和部署id查询流程定义-->
+    <select id="findOaActDefByOrgIdDeployId" resultType="com.hemooffice.suopu.dto.OaActDef">
+          SELECT ID,
+                 DEPLOYMENT_ID,
+				 `NAME`,
+				 CATEGORY_ID,
+				 ORG_ID,
+				 ACTIVE
+	      FROM `OA_ACT_DEF`
+         WHERE ORG_ID = #{orgId}
+           AND DEPLOYMENT_ID = #{deploymentId}
+           AND ACTIVE = 1
     </select>
 </mapper>

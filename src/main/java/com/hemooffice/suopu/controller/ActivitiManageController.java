@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.camunda.feel.syntaxtree.In;
+import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -350,5 +351,26 @@ public class ActivitiManageController {
         os.write(content);//下载
         os.flush();
         os.close();
+    }
+
+    /**
+     * 发起流程
+     * @return
+     */
+    @GetMapping("/approval-startHandle")
+    public Msg startHandleApproval(@NotBlank @RequestParam("deploymentId") String deploymentId){
+        //获取当前登陆机构
+        Organization organization = (Organization)sessionUtil.getSessionObj("organization");
+        if(organization == null){
+            return Msg.send(401,"redis中机构信息为空,请重新登陆");
+        }
+        String processInstanceId = null;
+        try {
+            processInstanceId =  activitiManageService.startHandleApproval(organization.getOrgId(),deploymentId);
+        } catch (CusAuthException e) {
+            e.printStackTrace();
+            return Msg.send(505,e.getMessage());
+        }
+        return Msg.success(processInstanceId);
     }
 }

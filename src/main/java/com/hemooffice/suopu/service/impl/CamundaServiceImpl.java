@@ -29,23 +29,21 @@ public class CamundaServiceImpl implements CamundaService {
     /**
      * 部署bpmn。xml资源文件
      */
-    public String deploy(String bpmnXml) {
-        logger.info("不会没到这吧？");
-        logger.info(bpmnXml);
-
+    @Override
+    public String deploy(String bpmnXml, String nane) {
         Deployment deployment = repositoryService.createDeployment()//创建部署对象
                 .addString(CommonUtils.GetGUID() +".bpmn",bpmnXml)
+                .name(nane)
                 .deploy();//完成部署
-        logger.info(deployment.getId());
         return deployment.getId();
     }
     /**
      * 开始一个流程实例
      */
-    public void startBpm(String proInsId) {
+    @Override
+    public String startProcessInstance(String proInsId) {
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(proInsId);
-        String id = processInstance.getId();
-        logger.info(id);
+        return processInstance.getProcessInstanceId();
     }
     /**
      * 完成一个任务 不带参数

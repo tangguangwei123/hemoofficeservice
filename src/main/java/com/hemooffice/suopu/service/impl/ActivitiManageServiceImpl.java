@@ -1,10 +1,12 @@
 package com.hemooffice.suopu.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.hemooffice.suopu.camundapo.ActReProcdef;
 import com.hemooffice.suopu.dto.*;
 import com.hemooffice.suopu.exception.CusAuthException;
 import com.hemooffice.suopu.exception.CusSystemException;
 import com.hemooffice.suopu.mapper.ActivitiManageMapper;
+import com.hemooffice.suopu.mapper.CamundaMapper;
 import com.hemooffice.suopu.service.ActivitiManageService;
 import com.hemooffice.suopu.service.CamundaService;
 import org.slf4j.Logger;
@@ -26,6 +28,8 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     private ActivitiManageMapper activitiManageMapper;
     @Autowired
     private CamundaService camundaService;
+    @Autowired
+    private CamundaMapper camundaMapper;
     /**
      * 新增审批类别
      * @param oaActCategory
@@ -67,7 +71,8 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     public int addActDef(OaActDef oaActDef) {
         //部署流程
         JSONObject jsonObject = JSONObject.parseObject(oaActDef.getFlowChart());
-        camundaService.deploy(jsonObject.get("xml").toString());
+        String deploymentId = camundaService.deploy(jsonObject.get("xml").toString(), oaActDef.getName());
+        oaActDef.setDeploymentId(deploymentId);
         return activitiManageMapper.addActDef(oaActDef);
     }
 
@@ -153,6 +158,7 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
      * @return
      * @throws CusAuthException
      */
+    @Transactional(rollbackFor={Exception.class})
     @Override
     public int updateActDefBpmn(OaActDef oaActDef) throws CusAuthException {
         //根据id查询数据库次流程定义内容
@@ -161,6 +167,14 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
             throw new CusAuthException("不存在此流程定义！");
         }
         dOaActDef.setFlowChart(oaActDef.getFlowChart());
+
+        JSONObject jsonObject = JSONObject.parseObject(oaActDef.getFlowChart());
+
+        //重新部署流程
+        String deploymentId = camundaService.deploy(jsonObject.get("xml").toString(), dOaActDef.getName());
+        //设置流程部署ID
+        dOaActDef.setDeploymentId(deploymentId);
+
         return activitiManageMapper.updateActDefById(dOaActDef);
     }
 
@@ -245,5 +259,30 @@ public class ActivitiManageServiceImpl implements ActivitiManageService {
     @Override
     public OaActFile findFileContentByFileIdOrgIdActId(Integer orgId, Integer actId, Integer fileId) {
         return activitiManageMapper.findFileContentByFileIdOrgIdActId(orgId, actId, fileId);
+    }
+
+    /**
+     * 发起审批
+     * @param orgId
+     * @param deploymentId
+     * @return
+     */
+    @Override
+    public String startHandleApproval(Integer orgId, String deploymentId) throws CusAuthException {
+        //验证该机构是否存在改流程
+        OaActDef oaActDef = activitiManageMapper.findOaActDefByOrgIdDeployId(orgId, deploymentId);
+
+        if(null == oaActDef){
+            throw new CusAuthException("本机构不存在该流程定义！");
+        }
+        //根据部署ID查询camunda流程定义key值
+        ActReProcdef actReProcdef = camundaMapper.getCamKeyByDeploymentId(deploymentId);
+
+        if(null == actReProcdef){
+            throw new CusAuthException("本机构不存在该流程部署！");
+        }
+
+        //根据key发起流程
+        return camundaService.startProcessInstance(actReProcdef.getKey());
     }
 }

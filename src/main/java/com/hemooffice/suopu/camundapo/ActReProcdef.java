@@ -1,4 +1,4 @@
-package com.hemooffice.suopu.dto;
+package com.hemooffice.suopu.camundapo;
 
 public class ActReProcdef {
     private String id;
@@ -19,17 +19,17 @@ public class ActReProcdef {
 
     private String dgrmResourceName;
 
-    private String description;
-
     private Byte hasStartFormKey;
-
-    private Byte hasGraphicalNotation;
 
     private Integer suspensionState;
 
     private String tenantId;
 
-    private String engineVersion;
+    private String versionTag;
+
+    private Integer historyTtl;
+
+    private Boolean startable;
 
     public String getId() {
         return id;
@@ -103,28 +103,12 @@ public class ActReProcdef {
         this.dgrmResourceName = dgrmResourceName == null ? null : dgrmResourceName.trim();
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
-    }
-
     public Byte getHasStartFormKey() {
         return hasStartFormKey;
     }
 
     public void setHasStartFormKey(Byte hasStartFormKey) {
         this.hasStartFormKey = hasStartFormKey;
-    }
-
-    public Byte getHasGraphicalNotation() {
-        return hasGraphicalNotation;
-    }
-
-    public void setHasGraphicalNotation(Byte hasGraphicalNotation) {
-        this.hasGraphicalNotation = hasGraphicalNotation;
     }
 
     public Integer getSuspensionState() {
@@ -143,11 +127,27 @@ public class ActReProcdef {
         this.tenantId = tenantId == null ? null : tenantId.trim();
     }
 
-    public String getEngineVersion() {
-        return engineVersion;
+    public String getVersionTag() {
+        return versionTag;
     }
 
-    public void setEngineVersion(String engineVersion) {
-        this.engineVersion = engineVersion == null ? null : engineVersion.trim();
+    public void setVersionTag(String versionTag) {
+        this.versionTag = versionTag == null ? null : versionTag.trim();
+    }
+
+    public Integer getHistoryTtl() {
+        return historyTtl;
+    }
+
+    public void setHistoryTtl(Integer historyTtl) {
+        this.historyTtl = historyTtl;
+    }
+
+    public Boolean getStartable() {
+        return startable;
+    }
+
+    public void setStartable(Boolean startable) {
+        this.startable = startable;
     }
 }

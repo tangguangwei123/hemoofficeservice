@@ -118,6 +118,14 @@ public interface ActivitiManageMapper {
      * @return
      */
     OaActFile findFileContentByFileIdOrgIdActId(@Param("orgId") Integer orgId, @Param("actId") Integer actId, @Param("fileId") Integer fileId);
+
+    /**
+     * 根据机构和部署id查询流程定义
+     * @param orgId
+     * @param deploymentId
+     * @return
+     */
+    OaActDef findOaActDefByOrgIdDeployId(@Param("orgId") Integer orgId, @Param("deploymentId") String deploymentId);
 }
 
 

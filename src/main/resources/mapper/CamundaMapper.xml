@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hemooffice.suopu.mapper.CamundaMapper" >
+    <!--根据角色Id加载用户列表-->
+    <select id="getCamKeyByDeploymentId" resultType="com.hemooffice.suopu.camundapo.ActReProcdef">
+        SELECT *
+          FROM `ACT_RE_PROCDEF`
+         WHERE DEPLOYMENT_ID_ = #{deploymentId}
+    </select>
+</mapper>
